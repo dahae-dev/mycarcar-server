@@ -6,7 +6,7 @@ import errorHandler from "errorhandler";
 import express from "express";
 import logger from "morgan";
 
-import rootRouter from "./routes/RootRouter";
+import appEndPoint from "./controllers/AppController";
 import loginRouter from "./routes/LoginRouter";
 import logoutRouter from "./routes/LogoutRouter";
 import registerRouter from "./routes/RegisterRouter";
@@ -29,7 +29,11 @@ class App {
     this.express.use(logger("dev"));
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: true }));
-    this.express.use(express.static(path.join(__dirname, "public")));
+    this.express.use(
+      express.static(
+        path.join(__dirname, "../../client-lift29-mycarcar-web/build"),
+      ),
+    );
   }
 
   private routes(): void {
@@ -38,7 +42,7 @@ class App {
     this.express.use("/api/register", registerRouter);
     this.express.use("/api/register_form", registerFormRouter);
 
-    this.express.use("/", rootRouter);
+    this.express.use("*", appEndPoint);
   }
 
   private launchConf(): void {
