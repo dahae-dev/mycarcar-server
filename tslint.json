@@ -8,7 +8,10 @@
     "quotemark": [true, "double", "avoid-escape"],
     "semicolon": [true, "always", "ignore-bound-class-methods"],
     "no-trailing-whitespace": true,
-    "no-console": false
+    "no-console": false,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "member-ordering": false
   },
   "rulesDirectory": []
 }

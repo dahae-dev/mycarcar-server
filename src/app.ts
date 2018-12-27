@@ -1,11 +1,18 @@
 import * as bodyParser from "body-parser";
 import * as path from "path";
 
+import dotenv from "dotenv";
 import errorHandler from "errorhandler";
 import express from "express";
 import logger from "morgan";
 
-import indexRouter from "./routes/index";
+import rootRouter from "./routes/RootRouter";
+import loginRouter from "./routes/LoginRouter";
+import logoutRouter from "./routes/LogoutRouter";
+import registerRouter from "./routes/RegisterRouter";
+import registerFormRouter from "./routes/RegisterFormRouter";
+
+dotenv.config();
 
 class App {
   public express: express.Application;
@@ -19,7 +26,6 @@ class App {
   }
 
   private middleware(): void {
-    this.express.set("port", process.env.PORT || 3000);
     this.express.use(logger("dev"));
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: true }));
@@ -27,15 +33,24 @@ class App {
   }
 
   private routes(): void {
-    this.express.use("/", indexRouter);
+    this.express.use("/api/login", loginRouter);
+    this.express.use("/api/logout", logoutRouter);
+    this.express.use("/api/register", registerRouter);
+    this.express.use("/api/register_form", registerFormRouter);
+
+    this.express.use("/", rootRouter);
   }
 
   private launchConf(): void {
-    const PORT = this.express.get("port");
+    const { PORT, MODE } = process.env;
     this.express.use(errorHandler());
 
     this.express.listen(PORT, () => {
-      console.log("App is running at http://localhost:%d in %s mode", PORT);
+      console.log(
+        "App is running at http://localhost:%d in %s mode",
+        PORT,
+        MODE,
+      );
       console.log("Press CTRL-C to stop\n");
     });
   }
