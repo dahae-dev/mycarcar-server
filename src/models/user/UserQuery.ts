@@ -1,18 +1,5 @@
 const TABLE_NAME: string = "users";
 
-interface ISelectKey {
-  id: string;
-}
-
-interface IRegisterInfo {
-  name: string;
-  id: string;
-  pw: string;
-  email: string;
-  phone: string;
-  [key: string]: string;
-}
-
 export default class UserQuery {
   public selectAllUser(): string {
     return `
