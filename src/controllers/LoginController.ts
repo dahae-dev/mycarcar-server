@@ -2,20 +2,6 @@ import { Request, Response } from "express";
 import UserModel from "../models/user/UserModel";
 import jsonwebtoken, { SignOptions, Secret } from "jsonwebtoken";
 
-interface ISignInInfo {
-  id: string;
-  pw: string;
-}
-
-interface IRowDataPacket {
-  u_no: number;
-  u_id: string;
-  u_password: string;
-  u_name: string;
-  u_email: string;
-  u_phone: string;
-}
-
 class LoginController {
   public async postUserInfo(req: Request, res: Response): Promise<any> {
     const { id, pw }: ISignInInfo = req.body;

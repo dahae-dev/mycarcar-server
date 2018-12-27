@@ -2,27 +2,6 @@ import con from "../../db";
 import { MysqlError } from "mysql";
 import UserQuery from "./UserQuery";
 
-interface ISelectKey {
-  id: string;
-}
-
-interface IRegisterInfo {
-  name: string;
-  id: string;
-  pw: string;
-  email: string;
-  phone: string;
-}
-
-interface IRowDataPacket {
-  u_no: number;
-  u_id: string;
-  u_password: string;
-  u_name: string;
-  u_email: string;
-  u_phone: string;
-}
-
 export default class UserModel {
   public getAllUser(): Promise<IRowDataPacket[]> {
     const query: string = new UserQuery().selectAllUser();

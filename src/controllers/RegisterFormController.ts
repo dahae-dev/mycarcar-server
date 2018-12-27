@@ -1,23 +1,6 @@
 import { Request, Response } from "express";
 import UserModel from "../models/user/UserModel";
 
-interface IRegisterInfo {
-  name: string;
-  id: string;
-  pw: string;
-  email: string;
-  phone: string;
-  [key: string]: string;
-}
-
-interface IChangedRegisterInfo {
-  name: string;
-  id: string;
-  pw: string;
-  email: string;
-  phone: string;
-}
-
 class RegisterFormController {
   public async registerInfoChangeRequest(
     req: Request,
