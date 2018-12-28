@@ -9,9 +9,9 @@ import cors from "cors";
 
 import appEndPoint from "./controllers/AppController";
 import loginRouter from "./routes/LoginRouter";
-import logoutRouter from "./routes/LogoutRouter";
 import registerRouter from "./routes/RegisterRouter";
-import registerFormRouter from "./routes/RegisterFormRouter";
+import editAccountRouter from "./routes/EditAccountRouter";
+
 import { authMiddlemare } from "./middlewares/auth";
 
 dotenv.config();
@@ -32,7 +32,8 @@ class App {
     this.express.use(
       cors({
         origin: "*",
-        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+        exposedHeaders: "x-access-token",
       }),
     );
     this.express.use(bodyParser.json());
@@ -46,19 +47,24 @@ class App {
 
   private routes(): void {
     this.express.use("/api/login", loginRouter);
-    this.express.use("/api/logout", logoutRouter);
     this.express.use("/api/register", registerRouter);
-    this.express.use("/api/register_form", registerFormRouter);
-
-    this.express.use("/tokenCheck", authMiddlemare);
+    this.express.use("/api/edit_account", authMiddlemare, editAccountRouter);
 
     this.express.use("*", appEndPoint);
   }
 
   private launchConf(): void {
-    const { PORT, MODE } = process.env;
-    this.express.use(errorHandler());
+    if (process.env.PORT === undefined) {
+      throw new Error("[-] .env file에 PORT가 존재하지 않습니다.");
+    }
 
+    if (process.env.MODE === undefined) {
+      throw new Error("[-] .env file에 MODE가 존재하지 않습니다.");
+    }
+
+    const { PORT, MODE } = process.env;
+
+    this.express.use(errorHandler());
     this.express.listen(PORT, () => {
       console.log(`App is running at http://localhost:${PORT} in ${MODE} mode`);
       console.log("Press CTRL-C to stop\n");
