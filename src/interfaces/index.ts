@@ -32,3 +32,10 @@ interface ISignInInfo {
   id: string;
   pw: string;
 }
+
+interface IDecodedToken {
+  id: string;
+  iat: number;
+  exp: number;
+  iss: string;
+}
