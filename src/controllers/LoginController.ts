@@ -9,11 +9,13 @@ class LoginController {
 
     const hasResult: boolean = !!result.length;
     if (hasResult && result[0].u_password === pw) {
+      const { HOST, PORT, SECRET } = process.env;
+
       const payload: object = {};
-      const secret: Secret = process.env.SECRET || "tempsecret";
+      const secret: Secret = SECRET || "tempsecret";
       const options: SignOptions = {
         keyid: id,
-        issuer: "localhost:5000",
+        issuer: `${HOST}:${PORT}`,
         expiresIn: "7d",
       };
 
