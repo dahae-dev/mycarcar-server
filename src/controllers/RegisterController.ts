@@ -1,15 +1,17 @@
 import { Request, Response } from "express";
 import UserModel from "../models/user/UserModel";
 
-class RegisterController {
+export default class RegisterController {
   public async registerRequest(req: Request, res: Response): Promise<any> {
-    const { name, id, pw, email, phone }: IRegisterInfo = req.body;
+    const { name, id, pw, email, phone } = req.body as IRegisterInfo;
     const userModel = new UserModel();
 
-    const getedResult: IRowDataPacket[] = await userModel.getUser({ id });
-    if (getedResult.length) {
-      res.json({ isRegistered: false });
-    } else {
+    const userInfomations = await userModel.getUser({ id });
+
+    const hasNotUserInfomation =
+      userInfomations[0] === undefined ? true : false;
+
+    if (hasNotUserInfomation) {
       await userModel.postUser({
         name,
         id,
@@ -17,11 +19,15 @@ class RegisterController {
         email,
         phone,
       });
-      res.json({ isRegistered: true });
+
+      res.statusCode = 200;
+      res.statusMessage =
+        "[+] Membership registration has been carried out normally.";
+      return res.end();
     }
+
+    res.statusCode = 412;
+    res.statusMessage = "[-] ID already exists.";
+    res.end();
   }
 }
-
-const registerController = new RegisterController();
-
-export default registerController;
