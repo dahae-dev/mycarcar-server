@@ -1,5 +1,5 @@
 import { Router } from "express";
-import loginController from "../controllers/LoginController";
+import LoginController from "../controllers/LoginController";
 
 class LoginRouter {
   public router: Router;
@@ -10,7 +10,8 @@ class LoginRouter {
   }
 
   private init() {
-    this.router.post("/", loginController.postUserInfo);
+    const { postUserInfo } = new LoginController();
+    this.router.post("/", postUserInfo);
   }
 }
 
