@@ -5,12 +5,14 @@ import dotenv from "dotenv";
 import errorHandler from "errorhandler";
 import express from "express";
 import logger from "morgan";
+import cors from "cors";
 
 import appEndPoint from "./controllers/AppController";
 import loginRouter from "./routes/LoginRouter";
 import logoutRouter from "./routes/LogoutRouter";
 import registerRouter from "./routes/RegisterRouter";
 import registerFormRouter from "./routes/RegisterFormRouter";
+import { authMiddlemare } from "./middlewares/auth";
 
 dotenv.config();
 
@@ -27,6 +29,12 @@ class App {
 
   private middleware(): void {
     this.express.use(logger("dev"));
+    this.express.use(
+      cors({
+        origin: "*",
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+      }),
+    );
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: true }));
     this.express.use(
@@ -42,6 +50,8 @@ class App {
     this.express.use("/api/register", registerRouter);
     this.express.use("/api/register_form", registerFormRouter);
 
+    this.express.use("/tokenCheck", authMiddlemare);
+
     this.express.use("*", appEndPoint);
   }
 
@@ -50,11 +60,7 @@ class App {
     this.express.use(errorHandler());
 
     this.express.listen(PORT, () => {
-      console.log(
-        "App is running at http://localhost:%d in %s mode",
-        PORT,
-        MODE,
-      );
+      console.log(`App is running at http://localhost:${PORT} in ${MODE} mode`);
       console.log("Press CTRL-C to stop\n");
     });
   }
