@@ -15,6 +15,9 @@ import checkDotenv from "./util/checkDotenv";
 import checkToken from "./middlewares/checkToken";
 import MiddlewareOptions from "./middlewares/MiddlewareOptions";
 
+/**
+ * 앱을 위한 환경설정 정보가 없으면 에러 발생.
+ */
 dotenv.config();
 checkDotenv();
 
@@ -29,6 +32,9 @@ class App {
     this.launchConf();
   }
 
+  /**
+   * 미들웨어.
+   */
   private middleware(): void {
     const middlewareOptions = new MiddlewareOptions();
 
@@ -43,6 +49,10 @@ class App {
     );
   }
 
+  /**
+   * 라우터.
+   * api이외의 경로로 접근하게 되면 앱의 index.html을 전달.
+   */
   private routes(): void {
     this.express.use("/api/login", loginRouter);
     this.express.use("/api/register", registerRouter);
@@ -51,6 +61,9 @@ class App {
     this.express.use("*", appEndPoint);
   }
 
+  /**
+   * 앱의 환경설정을 하고 실행합니다.
+   */
   private launchConf(): void {
     const { PORT, MODE } = process.env as IProcessEnv;
 

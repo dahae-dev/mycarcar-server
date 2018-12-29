@@ -3,7 +3,10 @@ import UserModel from "../models/user/UserModel";
 import jsonwebtoken, { SignOptions } from "jsonwebtoken";
 
 export default class LoginController {
-  public async postUserInfo(req: Request, res: Response): Promise<void> {
+  /**
+   * 로그인 요청.
+   */
+  public async postUserInfomation(req: Request, res: Response): Promise<void> {
     const userModel = new UserModel();
 
     const { id, pw } = req.body as ISignInInfomation;
@@ -13,14 +16,20 @@ export default class LoginController {
     })) as IRowDataPacket[];
 
     const userInfomation = userInfomations[0];
-    const hasNotUserInfomations = userInfomation === undefined ? true : false;
 
+    /**
+     * 회원 정보가 없을 경우의 응답.
+     */
+    const hasNotUserInfomations = userInfomation === undefined ? true : false;
     if (hasNotUserInfomations) {
       res.statusCode = 412;
       res.statusMessage = "[-] No matching information exists.";
       return res.end();
     }
 
+    /**
+     * 비밀번호가 맞지 않을 경우의 응답.
+     */
     if (userInfomation.u_password !== pw) {
       res.statusCode = 412;
       res.statusMessage = "[-] No matching information exists.";
@@ -35,6 +44,9 @@ export default class LoginController {
       expiresIn: EXPIREIN,
     } as SignOptions;
 
+    /**
+     * JWT 토큰 발행을 위한 응답.
+     */
     const rawtoken = jsonwebtoken.sign(payload, SECRET, options) as string;
     res.setHeader("x-access-token", rawtoken);
     res.statusCode = 204;
