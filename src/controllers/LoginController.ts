@@ -47,7 +47,7 @@ export default class LoginController {
     const rawtoken = jsonwebtoken.sign(payload, SECRET, options) as string;
     res.setHeader("x-access-token", rawtoken);
     res.statusCode = 204;
-    res.statusMessage = "[+] The toework has been issued as normal.";
+    res.statusMessage = "[+] The token has been issued as normal.";
     res.end();
   }
 }

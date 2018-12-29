@@ -13,6 +13,7 @@ import registerRouter from "./routes/RegisterRouter";
 import editAccountRouter from "./routes/EditAccountRouter";
 
 import { authMiddlemare } from "./middlewares/auth";
+import MiddlewareOptions from "./middlewares/MiddlewareOptions";
 
 dotenv.config();
 
@@ -28,14 +29,10 @@ class App {
   }
 
   private middleware(): void {
+    const middlewareOptions = new MiddlewareOptions();
+
     this.express.use(logger("dev"));
-    this.express.use(
-      cors({
-        origin: "*",
-        methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
-        exposedHeaders: "x-access-token",
-      }),
-    );
+    this.express.use(cors(middlewareOptions.cors));
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: true }));
     this.express.use(
