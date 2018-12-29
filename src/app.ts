@@ -14,8 +14,10 @@ import editAccountRouter from "./routes/EditAccountRouter";
 
 import { authMiddlemare } from "./middlewares/auth";
 import MiddlewareOptions from "./middlewares/MiddlewareOptions";
+import checkDotenv from "./util/checkDotenv";
 
 dotenv.config();
+checkDotenv();
 
 class App {
   public express: express.Application;
@@ -51,15 +53,7 @@ class App {
   }
 
   private launchConf(): void {
-    if (process.env.PORT === undefined) {
-      throw new Error("[-] .env file에 PORT가 존재하지 않습니다.");
-    }
-
-    if (process.env.MODE === undefined) {
-      throw new Error("[-] .env file에 MODE가 존재하지 않습니다.");
-    }
-
-    const { PORT, MODE } = process.env;
+    const { PORT, MODE } = process.env as IProcessEnv;
 
     this.express.use(errorHandler());
     this.express.listen(PORT, () => {

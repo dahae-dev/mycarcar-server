@@ -11,12 +11,12 @@ class EditAccountRouter {
 
   private init() {
     const {
-      updateAcountInfomation,
       getUserInfomation,
+      updateAccountInfomation,
     } = new EditAccountController();
 
     this.router.get("/", getUserInfomation);
-    this.router.post("/", updateAcountInfomation);
+    this.router.post("/", updateAccountInfomation);
   }
 }
 

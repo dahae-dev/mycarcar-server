@@ -28,7 +28,7 @@ interface ISelectKey {
   id: string;
 }
 
-interface ISignInInfo {
+interface ISignInInfomation {
   id: string;
   pw: string;
 }
@@ -38,4 +38,8 @@ interface IDecodedToken {
   iat: number;
   exp: number;
   iss: string;
+}
+
+interface IProcessEnv {
+  [key: string]: string;
 }
