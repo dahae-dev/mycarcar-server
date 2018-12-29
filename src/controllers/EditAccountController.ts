@@ -10,10 +10,17 @@ export default class EditAccountController {
     const idOfRequester = jwtManager.getDecodedToken().id;
 
     const userInfomation = (await userModel.getUser({ id: idOfRequester }))[0];
+    const data = {
+      id: userInfomation.u_id,
+      pw: userInfomation.u_password,
+      name: userInfomation.u_name,
+      email: userInfomation.u_email,
+      phone: userInfomation.u_phone,
+    } as IUserInfomation;
 
     res.statusCode = 200;
     res.statusMessage = "[+] Member information has been returned as normal.";
-    res.json(userInfomation);
+    res.json(data);
   }
 
   public async updateAccountInfomation(

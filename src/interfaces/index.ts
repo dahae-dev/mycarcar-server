@@ -16,6 +16,15 @@ interface IRegisterInfo {
   [key: string]: string;
 }
 
+interface IUserInfomation {
+  name: string;
+  id: string;
+  pw: string;
+  email: string;
+  phone: string;
+  [key: string]: string;
+}
+
 interface IChangedRegisterInfo {
   name: string;
   id: string;
