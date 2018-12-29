@@ -1,20 +1,19 @@
-import * as bodyParser from "body-parser";
-import * as path from "path";
-
-import dotenv from "dotenv";
-import errorHandler from "errorhandler";
-import express from "express";
-import logger from "morgan";
+import path from "path";
 import cors from "cors";
+import dotenv from "dotenv";
+import logger from "morgan";
+import express from "express";
+import bodyParser from "body-parser";
+import errorHandler from "errorhandler";
 
 import appEndPoint from "./controllers/AppController";
 import loginRouter from "./routes/LoginRouter";
 import registerRouter from "./routes/RegisterRouter";
 import editAccountRouter from "./routes/EditAccountRouter";
 
-import { authMiddlemare } from "./middlewares/auth";
-import MiddlewareOptions from "./middlewares/MiddlewareOptions";
 import checkDotenv from "./util/checkDotenv";
+import checkToken from "./middlewares/checkToken";
+import MiddlewareOptions from "./middlewares/MiddlewareOptions";
 
 dotenv.config();
 checkDotenv();
@@ -47,7 +46,7 @@ class App {
   private routes(): void {
     this.express.use("/api/login", loginRouter);
     this.express.use("/api/register", registerRouter);
-    this.express.use("/api/edit_account", authMiddlemare, editAccountRouter);
+    this.express.use("/api/edit_account", checkToken, editAccountRouter);
 
     this.express.use("*", appEndPoint);
   }

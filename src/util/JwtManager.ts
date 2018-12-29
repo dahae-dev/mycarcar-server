@@ -46,12 +46,14 @@ export default class JwtManager {
       ) as IDecodedToken;
       return decodedToken;
     } catch (error) {
-      const { HOST, PORT } = process.env;
-      return { id: "", iat: 0, exp: 0, iss: `${HOST}:${PORT}` };
+      const { HOST, PORT } = process.env as IProcessEnv;
+      const dumpToken = { id: "", iat: 0, exp: 0, iss: `${HOST}:${PORT}` };
+      return dumpToken;
     }
   }
 
-  public isValidToken(decodedToken: IDecodedToken): boolean {
+  public isValidToken(): boolean {
+    const decodedToken = this.getDecodedToken();
     return decodedToken.id !== "";
   }
 }
