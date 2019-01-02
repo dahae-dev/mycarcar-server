@@ -15,7 +15,7 @@ export default class EditAccountController {
     const userInfomation = (await userModel.getUser({ id: idOfRequester }))[0];
     const data = {
       id: userInfomation.u_id,
-      pw: userInfomation.u_password,
+      pw: "",
       name: userInfomation.u_name,
       email: userInfomation.u_email,
       phone: userInfomation.u_phone,

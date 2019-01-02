@@ -10,8 +10,8 @@ class LoginRouter {
   }
 
   private init() {
-    const { postUserInfomation: postUserInfo } = new LoginController();
-    this.router.post("/", postUserInfo);
+    const { postUserInfomation } = new LoginController();
+    this.router.post("/", postUserInfomation);
   }
 }
 

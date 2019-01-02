@@ -22,8 +22,8 @@ export default (req: Request, res: Response, next: NextFunction): void => {
   /**
    * 해싱된 토큰이 유효하지 않은 경우 status code : 401(권한 없음)을 반환
    */
-  const isNotInvalidRawToken = !jwtManager.isInvalidRawToken();
-  if (isNotInvalidRawToken) {
+  const isInvalidRawToken = !jwtManager.isValidRawToken();
+  if (isInvalidRawToken) {
     res.statusCode = 401;
     res.statusMessage = "[-] Invalid token.";
     return res.end();

@@ -5,7 +5,7 @@ export default class RegisterController {
   /**
    * 회원가입 요청을 위한 컨트롤러.
    */
-  public async registerRequest(req: Request, res: Response): Promise<any> {
+  public async registerRequest(req: Request, res: Response): Promise<void> {
     const { name, id, pw, email, phone } = req.body as IRegisterInfomation;
     const userModel = new UserModel();
 
@@ -14,8 +14,7 @@ export default class RegisterController {
     /**
      * 같은 회원 정보가 없으므로 회원가입 조건 만족할 경우의 응답.
      */
-    const hasNotUserInfomation =
-      userInfomations[0] === undefined ? true : false;
+    const hasNotUserInfomation = userInfomations[0] === undefined;
     if (hasNotUserInfomation) {
       await userModel.postUser({
         name,

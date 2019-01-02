@@ -23,8 +23,8 @@ export default class JwtManager {
   /**
    * 해싱된 토큰의 타입이 문자열이므로, 문자열 배열이면 유효하지 않은 토큰.
    */
-  public isInvalidRawToken(): boolean {
-    return !Array.isArray(this.req.headers["x-access-token"]);
+  public isValidRawToken(): boolean {
+    return typeof this.req.headers["x-access-token"] === "string";
   }
 
   /**
@@ -40,13 +40,11 @@ export default class JwtManager {
    * 헤더에서 토큰을 읽어와서 해싱된 토큰을 반환.
    */
   public getRawToken(): string {
-    const isNomalRawToken = this.hasRawToken() && this.isInvalidRawToken();
+    const isNomalRawToken = this.hasRawToken() && this.isValidRawToken();
 
     if (isNomalRawToken) {
       const rawToken = this.req.headers["x-access-token"] as string;
-      const isInvaildRawToken = !!rawToken.length;
-
-      return isInvaildRawToken ? rawToken : this.getGarbageRawToken();
+      return rawToken;
     }
 
     return this.getGarbageRawToken();
@@ -66,7 +64,12 @@ export default class JwtManager {
       return decodedToken;
     } catch (error) {
       const { HOST, PORT } = process.env as IProcessEnv;
-      const garbageToken = { id: "", iat: 0, exp: 0, iss: `${HOST}:${PORT}` };
+      const garbageToken = {
+        id: "",
+        iat: 0,
+        exp: 0,
+        iss: `${HOST}:${PORT}`,
+      } as IDecodedToken;
       return garbageToken;
     }
   }
