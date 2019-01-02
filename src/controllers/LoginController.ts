@@ -20,7 +20,7 @@ export default class LoginController {
     /**
      * 회원 정보가 없을 경우의 응답.
      */
-    const hasNotUserInfomations = userInfomation === undefined ? true : false;
+    const hasNotUserInfomations = userInfomation === undefined;
     if (hasNotUserInfomations) {
       res.statusCode = 412;
       res.statusMessage = "[-] No matching information exists.";
@@ -36,9 +36,8 @@ export default class LoginController {
       return res.end();
     }
 
-    const { HOST, PORT, SECRET, EXPIREIN } = process.env as IProcessEnv;
-
     const payload = { id } as object;
+    const { HOST, PORT, SECRET, EXPIREIN } = process.env as IProcessEnv;
     const options = {
       issuer: `${HOST}:${PORT}`,
       expiresIn: EXPIREIN,
@@ -47,7 +46,7 @@ export default class LoginController {
     /**
      * JWT 토큰 발행을 위한 응답.
      */
-    const rawtoken = jsonwebtoken.sign(payload, SECRET, options) as string;
+    const rawtoken = jsonwebtoken.sign(payload, SECRET, options);
     res.setHeader("x-access-token", rawtoken);
     res.statusCode = 204;
     res.statusMessage = "[+] The token has been issued as normal.";
