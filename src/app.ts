@@ -42,11 +42,7 @@ class App {
     this.express.use(cors(middlewareOptions.cors));
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: true }));
-    this.express.use(
-      express.static(
-        path.join(__dirname, "../../client-lift29-mycarcar-web/build"),
-      ),
-    );
+    this.express.use(express.static(path.join(__dirname, "../build")));
   }
 
   /**
