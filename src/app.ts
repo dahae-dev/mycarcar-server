@@ -23,8 +23,6 @@ import { IProcessEnv, AppBase } from "./interfaces";
 dotenv.config();
 checkDotenv();
 
-const application = express();
-
 /** 미들웨어. */
 const middleware: AppBase = (app) => {
   app.use(logger("dev"));
@@ -53,6 +51,8 @@ const launchConf: AppBase = (app) => {
     console.log("Press CTRL-C to stop\n");
   });
 };
+
+const application = express();
 
 middleware(application);
 routes(application);
