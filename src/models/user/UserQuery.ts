@@ -1,18 +1,16 @@
+import { ISelectKey, IRegisterInfomation } from "../../interfaces";
+
 const TABLE_NAME: string = "users";
 
 export default class UserQuery {
-  /**
-   * 유저 정보를 요청하는 쿼리문자열을 반환.
-   */
+  /** 유저 정보를 요청하는 쿼리문자열을 반환. */
   public selectUser({ id }: ISelectKey): string {
     return `
       SELECT * FROM ${TABLE_NAME} WHERE u_id="${id}";
     `;
   }
 
-  /**
-   * 유저 정보를 저장하는 쿼리문자열을 반환.
-   */
+  /** 유저 정보를 저장하는 쿼리문자열을 반환. */
   public insertUser({
     name,
     id,
@@ -26,9 +24,7 @@ export default class UserQuery {
     `;
   }
 
-  /**
-   * 유저 정보를 업데이트하는 쿼리문자열을 반환.
-   */
+  /** 유저 정보를 업데이트하는 쿼리문자열을 반환. */
   public updateUser({
     name,
     id,
