@@ -9,6 +9,7 @@ import {
   SendQuery,
   InsertUser,
   UpdateUser,
+  SelectUser,
 } from "../../interfaces";
 
 /** 데이터베이스에 쿼리를 전송. */
@@ -25,7 +26,7 @@ const sendQuery: SendQuery = (query) => {
 };
 
 /** 유저의 정보를 요청. */
-export const selectUser = ({ id }: ISelectKey) => {
+export const selectUser: SelectUser = ({ id }) => {
   const query = getSelectUserQuery({ id });
   return sendQuery(query);
 };
