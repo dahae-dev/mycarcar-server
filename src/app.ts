@@ -57,5 +57,3 @@ const application = express();
 middleware(application);
 routes(application);
 launchConf(application);
-
-export default { application };
