@@ -6,71 +6,56 @@ import express from "express";
 import bodyParser from "body-parser";
 import errorHandler from "errorhandler";
 
-import appEndPoint from "./controllers/AppController";
-import loginRouter from "./routes/LoginRouter";
-import registerRouter from "./routes/RegisterRouter";
-import editAccountRouter from "./routes/EditAccountRouter";
+import { appEndPoint } from "./controllers/appController";
 
-import checkDotenv from "./util/checkDotenv";
-import checkToken from "./middlewares/checkToken";
-import MiddlewareOptions from "./middlewares/MiddlewareOptions";
+import loginRouter from "./routes/loginRouter";
+import registerRouter from "./routes/registerRouter";
+import editAccountRouter from "./routes/editAccountRouter";
 
-/**
- * 앱을 위한 환경설정 정보가 없으면 에러 발생.
- */
+import { checkDotenv } from "./util/checkDotenv";
+
+import { checkToken } from "./middlewares/checkToken";
+import { corsOption } from "./middlewares/options";
+
+import { IProcessEnv, AppBase } from "./interfaces";
+
+/** 앱을 위한 환경설정 정보가 없으면 에러 발생. */
 dotenv.config();
 checkDotenv();
 
-class App {
-  public express: express.Application;
+const application = express();
 
-  public constructor() {
-    this.express = express();
+/** 미들웨어. */
+const middleware: AppBase = (app) => {
+  app.use(logger("dev"));
+  app.use(cors(corsOption));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(express.static(path.join(__dirname, "../build")));
+};
 
-    this.middleware();
-    this.routes();
-    this.launchConf();
-  }
+/** api이외의 경로로 접근하게 되면 앱의 index.html을 전달. */
+const routes: AppBase = (app) => {
+  app.use("/api/login", loginRouter);
+  app.use("/api/register", registerRouter);
+  app.use("/api/edit_account", checkToken, editAccountRouter);
 
-  /**
-   * 미들웨어.
-   */
-  private middleware(): void {
-    const middlewareOptions = new MiddlewareOptions();
+  app.use("*", appEndPoint);
+};
 
-    this.express.use(logger("dev"));
-    this.express.use(cors(middlewareOptions.cors));
-    this.express.use(bodyParser.json());
-    this.express.use(bodyParser.urlencoded({ extended: true }));
-    this.express.use(express.static(path.join(__dirname, "../build")));
-  }
+/** 앱의 환경설정을 하고 실행합니다. */
+const launchConf: AppBase = (app) => {
+  const { PORT, MODE, HOST } = process.env as IProcessEnv;
 
-  /**
-   * 라우터.
-   * api이외의 경로로 접근하게 되면 앱의 index.html을 전달.
-   */
-  private routes(): void {
-    this.express.use("/api/login", loginRouter);
-    this.express.use("/api/register", registerRouter);
-    this.express.use("/api/edit_account", checkToken, editAccountRouter);
+  app.use(errorHandler());
+  app.listen(PORT, () => {
+    console.log(`App is running at http://${HOST}:${PORT} in ${MODE} mode`);
+    console.log("Press CTRL-C to stop\n");
+  });
+};
 
-    this.express.use("*", appEndPoint);
-  }
+middleware(application);
+routes(application);
+launchConf(application);
 
-  /**
-   * 앱의 환경설정을 하고 실행합니다.
-   */
-  private launchConf(): void {
-    const { PORT, MODE } = process.env as IProcessEnv;
-
-    this.express.use(errorHandler());
-    this.express.listen(PORT, () => {
-      console.log(`App is running at http://localhost:${PORT} in ${MODE} mode`);
-      console.log("Press CTRL-C to stop\n");
-    });
-  }
-}
-
-const app: App = new App();
-
-export default app.express;
+export default { application };
