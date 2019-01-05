@@ -8,6 +8,7 @@ export interface ISelectFromUser {
   mb_phone: string;
   mb_company: string;
   mb_fax: string;
+  mb_level: string;
 }
 
 /** DB에서 불러온 회원의 모든 정보를 응답으로 보내주기 위한 JSON DATA의 인터페이스. */

@@ -36,6 +36,7 @@ export const postUser: AsyncController = async (req, res) => {
   /** JWT 토큰 발행을 위한 응답. */
   const rawtoken = jsonwebtoken.sign(payload, SECRET, options);
   res.setHeader("x-access-token", rawtoken);
+  res.setHeader("level", userInfomation.mb_level);
   res.statusCode = 204;
   res.statusMessage = "[+] The token has been issued as normal.";
   res.end();
