@@ -3,6 +3,7 @@ import {
   GetInsertUserQuery,
   GetInsertCompanyUserQuery,
   GetUpdateUserQuery,
+  GetUpdateCompanyUserQuery,
 } from "../../_@types/Models/User";
 
 const TABLE_NAME = "n8_member";
@@ -38,4 +39,11 @@ export const getUpdateUserQuery: GetUpdateUserQuery = (updateData) => {
   const { name, id, pw, email, phone } = updateData;
   // tslint:disable-next-line: max-line-length
   return `UPDATE ${TABLE_NAME} SET mb_name="${name}", mb_id="${id}", mb_password="${pw}", mb_email="${email}", mb_phone="${phone}" WHERE mb_id="${id}"`;
+};
+
+/** 유저 정보를 업데이트하는 쿼리문자열을 반환. */
+export const getUpdateCompanyUserQuery: GetUpdateCompanyUserQuery = (updateData) => {
+  const { name, id, pw, email, phone, company, fax } = updateData;
+  // tslint:disable-next-line: max-line-length
+  return `UPDATE ${TABLE_NAME} SET mb_name="${name}", mb_id="${id}", mb_password="${pw}", mb_email="${email}", mb_phone="${phone}", mb_company="${company}", mb_fax="${fax}" WHERE mb_id="${id}"`;
 };
