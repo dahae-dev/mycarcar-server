@@ -11,6 +11,7 @@ const envList: string[] = [
   "DB_PASSWORD",
   "SECRET",
   "EXPIREIN",
+  "DB_DATABASE",
 ];
 
 /** 환경변수 파일에서 필요한 속성이 없을 경우 에러를 발생시켜주는 함수입니다. */

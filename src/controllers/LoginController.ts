@@ -1,13 +1,14 @@
-import { AsyncController } from "../interfaces";
 import { selectUser } from "../models/user/UserModel";
 import jsonwebtoken, { SignOptions } from "jsonwebtoken";
-import { ISignInInfomation, IUserData, IProcessEnv } from "../interfaces";
+import { AsyncController } from "../_@types/Controllers";
+import { ISignInInfomation, ISelectFromDB } from "../_@types/Models/User";
+import { IProcessEnv } from "../_@types/env";
 
 /** 로그인 요청. */
 export const postUser: AsyncController = async (req, res) => {
   const { id, pw } = req.body as ISignInInfomation;
 
-  const userInfomations = (await selectUser({ id })) as IUserData[];
+  const userInfomations = (await selectUser({ id })) as ISelectFromDB[];
   const userInfomation = userInfomations[0];
 
   /** 회원 정보가 없을 경우의 응답. */

@@ -1,8 +1,8 @@
 import {
-  GetUpdateUserQuery,
-  GetInsertUserQuery,
   GetSelectUserQuery,
-} from "../../interfaces";
+  GetInsertUserQuery,
+  GetUpdateUserQuery,
+} from "../../_@types/Models/User";
 
 const TABLE_NAME = "users";
 

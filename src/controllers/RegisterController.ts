@@ -1,9 +1,10 @@
 import { selectUser, insertUser } from "../models/user/UserModel";
-import { IRegisterData, AsyncController } from "../interfaces";
+import { AsyncController } from "../_@types/Controllers";
+import { IInsertForDB } from "../_@types/Models/User";
 
 /** 회원가입 요청을 위한 컨트롤러. */
 export const postRegister: AsyncController = async (req, res) => {
-  const { name, id, pw, email, phone } = req.body as IRegisterData;
+  const { name, id, pw, email, phone } = req.body as IInsertForDB;
 
   const userInfomations = await selectUser({ id });
 
