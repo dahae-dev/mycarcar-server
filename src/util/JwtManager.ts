@@ -1,6 +1,7 @@
 import { Request } from "express";
 import jsonwebtoken from "jsonwebtoken";
-import { IProcessEnv, IDecodedToken } from "../interfaces";
+import { IProcessEnv } from "../_@types/env";
+import { IDecodedToken } from "../_@types/jwt";
 
 /** JWT토큰을 관리해주는 클래스. */
 export default class JwtManager {

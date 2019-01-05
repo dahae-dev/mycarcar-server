@@ -1,16 +1,19 @@
-import { selectUser, insertUser } from "../models/user/UserModel";
-import { IRegisterData, AsyncController } from "../interfaces";
+import { selectUser, insertUser } from "../../models/user/UserModel";
+import { AsyncController } from "../../_@types/Controllers";
+import { IInsertForUser, ISelectFromUser } from "../../_@types/Models/User";
 
 /** 회원가입 요청을 위한 컨트롤러. */
-export const postRegister: AsyncController = async (req, res) => {
-  const { name, id, pw, email, phone } = req.body as IRegisterData;
+export const postRegisterUser: AsyncController = async (req, res) => {
+  const insertForUser: IInsertForUser = req.body;
 
-  const userInfomations = await selectUser({ id });
+  const userInfomations: ISelectFromUser[] = await selectUser({
+    id: insertForUser.id,
+  });
 
   /** 같은 회원 정보가 없으므로 회원가입 조건 만족할 경우의 응답. */
   const hasNotUserInfomation = userInfomations[0] === undefined;
   if (hasNotUserInfomation) {
-    await insertUser({ name, id, pw, email, phone });
+    await insertUser(insertForUser);
 
     res.statusCode = 200;
     res.statusMessage =

@@ -1,5 +1,5 @@
 import JwtManager from "../util/JwtManager";
-import { Middleware } from "../interfaces";
+import { Middleware } from "../_@types/Middlewares";
 
 /** JWT토큰을 이용하여 인증을 관리하는 미들웨어 */
 export const checkToken: Middleware = (req, res, next) => {
