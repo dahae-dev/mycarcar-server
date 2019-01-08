@@ -1,12 +1,13 @@
 import { selectUser } from "../models/user/UserModel";
 import jsonwebtoken, { SignOptions } from "jsonwebtoken";
-import { AsyncController } from "../_@types/Controllers";
+import { AsyncController, IJwtParam, IPayload } from "../_@types/Controllers";
 import { ISignInInfomation, ISelectFromUser } from "../_@types/Models/User";
-import { IProcessEnv } from "../_@types/env";
+import ResponseManager from "./util/ResponseManager";
 
 /** 로그인 요청. */
 export const postUserController: AsyncController = async (req, res) => {
   const { id, pw }: ISignInInfomation = req.body;
+  const responseManager = new ResponseManager(res);
 
   const userInfomations: ISelectFromUser[] = await selectUser({ id });
   const userInfomation = userInfomations[0];
@@ -14,35 +15,24 @@ export const postUserController: AsyncController = async (req, res) => {
   /** 회원 정보가 없을 경우의 응답. */
   const hasNotUserInfomations = userInfomation === undefined;
   if (hasNotUserInfomations) {
-    res.status(412).json({
-      statusCode: 412,
-      statusMessage: "[-] No matching information exists.",
-    });
-    return;
+    return responseManager.json(412, "[-] No matching information exists.");
   }
 
   /** 비밀번호가 맞지 않을 경우의 응답. */
   if (userInfomation.mb_password !== pw) {
-    res.status(412).json({
-      statusCode: 412,
-      statusMessage: "[-] No matching information exists.",
-    });
-    return;
+    return responseManager.json(412, "[-] No matching information exists.");
   }
 
-  const payload: {} = { id };
-  const { HOST, PORT, SECRET, EXPIREIN } = process.env as IProcessEnv;
-  const options = {
+  const payload: IPayload = { id };
+  const { HOST, PORT, SECRET, EXPIREIN } = process.env as IJwtParam;
+  const options: SignOptions = {
     issuer: `${HOST}:${PORT}`,
     expiresIn: EXPIREIN,
-  } as SignOptions;
+  };
 
   /** JWT 토큰 발행을 위한 응답. */
   const rawtoken = jsonwebtoken.sign(payload, SECRET, options);
   res.setHeader("x-access-token", rawtoken);
-  res.setHeader("level", userInfomation.mb_level);
-  res.status(204).json({
-    statusCode: 204,
-    statusMessage: "[+] The token has been issued as normal.",
-  });
+
+  responseManager.json(204, "[+] The token has been issued as normal.", { level: userInfomation.mb_level });
 };
