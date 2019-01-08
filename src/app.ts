@@ -16,8 +16,7 @@ import { checkDotenv } from "./util/checkDotenv";
 
 import { checkToken } from "./middlewares/checkToken";
 import { corsOption } from "./middlewares/options";
-
-import { IProcessEnv } from "./_@types/env";
+import { IAppListenOption } from "./_@types/Apps";
 
 /** 앱을 위한 환경설정 정보가 없으면 에러 발생. */
 dotenv.config();
@@ -40,7 +39,7 @@ app.use("*", appEndPoint);
 app.use(errorHandler());
 
 /** 앱 실행 */
-const { PORT, MODE, HOST } = process.env as IProcessEnv;
+const { PORT, MODE, HOST } = process.env as IAppListenOption;
 app.listen(PORT, () => {
   console.log(`App is running at http://${HOST}:${PORT} in ${MODE} mode`);
   console.log("Press CTRL-C to stop\n");
