@@ -3,7 +3,7 @@ import { AsyncController } from "../../_@types/Controllers";
 import { IInsertForUser, ISelectFromUser } from "../../_@types/Models/User";
 
 /** 회원가입 요청을 위한 컨트롤러. */
-export const postRegisterUser: AsyncController = async (req, res) => {
+export const postRegisterUserController: AsyncController = async (req, res) => {
   const insertForUser: IInsertForUser = req.body;
 
   const userInfomations: ISelectFromUser[] = await selectUser({
@@ -15,14 +15,17 @@ export const postRegisterUser: AsyncController = async (req, res) => {
   if (hasNotUserInfomation) {
     await insertUser(insertForUser);
 
-    res.statusCode = 200;
-    res.statusMessage =
-      "[+] Membership registration has been carried out normally.";
-    return res.end();
+    res.status(200).json({
+      statusCode: 200,
+      statusMessage:
+        "[+] Membership registration has been carried out normally.",
+    });
+    return;
   }
 
   /** 이미 해당 아이디가 존재할 경우의 응답. */
-  res.statusCode = 412;
-  res.statusMessage = "[-] ID already exists.";
-  res.end();
+  res.status(412).json({
+    statusCode: 412,
+    statusMessage: "[-] ID already exists.",
+  });
 };

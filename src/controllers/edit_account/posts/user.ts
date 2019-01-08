@@ -8,7 +8,8 @@ export const updateUserController: AsyncController = async (req, res) => {
 
   /** 회원정보 수정이 정상적으로 이루어졌을 경우의 응답. */
   await updateUser({ name, id, pw, email, phone });
-  res.statusCode = 200;
-  res.statusMessage = "[+] Member information has been modified as normal..";
-  res.end();
+  res.status(200).json({
+    statusCode: 200,
+    statusMessage: "[+] Member information has been modified as normal..",
+  });
 };
