@@ -7,7 +7,7 @@ import {
 } from "../../_@types/Models/User";
 
 /** 회원정보 수정을 위한 회원정보 요청. */
-export const getUser: AsyncController = async (req, res) => {
+export const getUserController: AsyncController = async (req, res) => {
   const jwtManager = new JwtManager(req);
 
   const idOfRequester = jwtManager.getDecodedToken().id;
@@ -34,7 +34,9 @@ export const getUser: AsyncController = async (req, res) => {
   };
 
   /** 일치하는 회원 정보가 있을 경우의 응답. */
-  res.statusCode = 200;
-  res.statusMessage = "[+] Member information has been returned as normal.";
-  res.json(data);
+  res.status(200).json({
+    statusCode: 200,
+    statusMessage: "[+] Member information has been returned as normal.",
+    ...data,
+  });
 };

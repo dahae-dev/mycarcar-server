@@ -8,17 +8,21 @@ export const checkToken: Middleware = (req, res, next) => {
   /** 해싱된 토큰을 가지고 있지 않으면 status code : 401(권한 없음)을 반환 */
   const hasNotRawToken = !jwtManager.hasRawToken();
   if (hasNotRawToken) {
-    res.statusCode = 401;
-    res.statusMessage = "[-] You don't have a token.";
-    return res.end();
+    res.status(401).json({
+      statusCode: 401,
+      statusMessage: "[-] You don't have a token.",
+    });
+    return;
   }
 
   /** 해싱된 토큰이 유효하지 않은 경우 status code : 401(권한 없음)을 반환 */
   const isInvalidRawToken = !jwtManager.isValidRawToken();
   if (isInvalidRawToken) {
-    res.statusCode = 401;
-    res.statusMessage = "[-] Invalid token.";
-    return res.end();
+    res.status(401).json({
+      statusCode: 401,
+      statusMessage: "[-] Invalid token.",
+    });
+    return;
   }
 
   /** 토큰 만료 여부 검증. */
@@ -28,7 +32,8 @@ export const checkToken: Middleware = (req, res, next) => {
   }
 
   /** 토큰이 만료된 경우 status code : 401(권한 없음)을 반환 */
-  res.statusCode = 401;
-  res.statusMessage = "[-] Expired token.";
-  return res.end();
+  res.status(401).json({
+    statusCode: 401,
+    statusMessage: "[-] Expired token.",
+  });
 };
