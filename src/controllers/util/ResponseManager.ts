@@ -8,6 +8,12 @@ export default class ResponseManager {
   }
 
   public json(statusCode: number, statusMessage: string, jsonData = {}) {
-    this.res.status(statusCode).json({ statusCode, statusMessage, ...jsonData });
+    if (statusCode >= 200 && statusCode < 300) {
+      this.res.json({ statusCode, statusMessage, ...jsonData });
+      return;
+    }
+    this.res.statusCode = statusCode;
+    this.res.statusMessage = statusMessage;
+    this.res.end();
   }
 }
