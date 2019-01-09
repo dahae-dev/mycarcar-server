@@ -49,14 +49,10 @@ export interface IInsertForUser {
 }
 
 /** DB에서 유저 정보 삽입을 위한 쿼리문을 만드는 함수의 타입 */
-export type GetInsertUserQuery = (
-  { name, id, pw, email, phone }: IInsertForUser,
-) => string;
+export type GetInsertUserQuery = ({ name, id, pw, email, phone }: IInsertForUser) => string;
 
 /** 모델에서 유저정보를 삽입하는 함수의 타입(회원가입) */
-export type InsertUser = (
-  { name, id, pw, email, phone }: IInsertForUser,
-) => Promise<any>;
+export type InsertUser = ({ name, id, pw, email, phone }: IInsertForUser) => Promise<any>;
 
 /** DB에서 캐피탈 관라자의 모든 정보를 입력하기 위한 인터페이스. */
 export interface IInsertForCompanyUser {
@@ -70,14 +66,10 @@ export interface IInsertForCompanyUser {
 }
 
 /** DB에서 유저 정보 삽입을 위한 쿼리문을 만드는 함수의 타입 */
-export type GetInsertCompanyUserQuery = (
-  { name, id, pw, email, phone, company, fax }: IInsertForCompanyUser,
-) => string;
+export type GetInsertCompanyUserQuery = ({ name, id, pw, email, phone, company, fax }: IInsertForCompanyUser) => string;
 
 /** 모델에서 유저정보를 삽입하는 함수의 타입(회원가입) */
-export type InsertCompanyUser = (
-  { name, id, pw, email, phone, company, fax }: IInsertForCompanyUser,
-) => Promise<any>;
+export type InsertCompanyUser = ({ name, id, pw, email, phone, company, fax }: IInsertForCompanyUser) => Promise<any>;
 
 /** DB에서 회원의 모든 정보를 변경하기 위한 인터페이스. */
 export interface IUpdateForUser {
@@ -89,14 +81,10 @@ export interface IUpdateForUser {
 }
 
 /** DB에서 유저 정보 업데이트를 위한 쿼리문을 함수의 타입 */
-export type GetUpdateUserQuery = (
-  { name, id, pw, email, phone }: IUpdateForUser,
-) => string;
+export type GetUpdateUserQuery = ({ name, id, pw, email, phone }: IUpdateForUser) => string;
 
 /** 모델에서 유저정보를 업데이트를 하는 함수의 타입(회원정보 수정) */
-export type UpdateUser = (
-  { name, id, pw, email, phone }: IUpdateForUser,
-) => Promise<any>;
+export type UpdateUser = ({ name, id, pw, email, phone }: IUpdateForUser) => Promise<any>;
 
 /** DB에서 회원의 모든 정보를 변경하기 위한 인터페이스. */
 export interface IUpdateForCompanyUser {
@@ -110,11 +98,29 @@ export interface IUpdateForCompanyUser {
 }
 
 /** DB에서 유저 정보 업데이트를 위한 쿼리문을 함수의 타입 */
-export type GetUpdateCompanyUserQuery = (
-  { name, id, pw, email, phone, company, fax }: IUpdateForCompanyUser,
-) => string;
+export type GetUpdateCompanyUserQuery = ({ name, id, pw, email, phone, company, fax }: IUpdateForCompanyUser) => string;
 
 /** 모델에서 유저정보를 업데이트를 하는 함수의 타입(회원정보 수정) */
-export type UpdateCompanyUser = (
-  { name, id, pw, email, phone, company, fax }: IUpdateForCompanyUser,
-) => Promise<any>;
+export type UpdateCompanyUser = ({ name, id, pw, email, phone, company, fax }: IUpdateForCompanyUser) => Promise<any>;
+
+export interface IGetSelectUserListQuery {
+  (): string;
+}
+
+export interface ISelectUserList {
+  (): Promise<any>;
+}
+
+export interface IUserList {
+  mb_id: string;
+  mb_name: string;
+  mb_email: string;
+  mb_phone: string;
+  mb_nick: string;
+  mb_level: string;
+  mb_company: string;
+  mb_fax: string;
+  mb_register_date: string;
+  mb_login_date: string;
+  mb_leave_date: string;
+}

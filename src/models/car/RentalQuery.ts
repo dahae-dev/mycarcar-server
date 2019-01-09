@@ -8,11 +8,12 @@ import {
   IGetSelectCarModelQuery,
   IGetSelectCarDetailQuery,
   IGetSelectCarGradeQuery,
+  IGetSelectCarPriceQuery,
   IGetSelectCarOptionQuery
 } from "../../_@types/Models/Car";
 
 /** 차량 브랜드 정보를 요청하는 쿼리문 반환  */
-export const getSelectCarBrandQuery: IGetSelectCarBrandQuery = origin => {
+export const getSelectCarBrandQuery: IGetSelectCarBrandQuery = (origin) => {
   return `
     SELECT car_brand 
     FROM car_brand
@@ -21,7 +22,7 @@ export const getSelectCarBrandQuery: IGetSelectCarBrandQuery = origin => {
 };
 
 /** 차량 시리즈 정보를 요청하는 쿼리문 반환  */
-export const getSelectCarSeriesQuery: IGetSelectCarSeriesQuery = brand => {
+export const getSelectCarSeriesQuery: IGetSelectCarSeriesQuery = (brand) => {
   return `
     SELECT car_series
     FROM car_series
@@ -32,7 +33,7 @@ export const getSelectCarSeriesQuery: IGetSelectCarSeriesQuery = brand => {
 };
 
 /** 차량 모델 정보를 요청하는 쿼리문 반환  */
-export const getSelectCarModelQuery: IGetSelectCarModelQuery = series => {
+export const getSelectCarModelQuery: IGetSelectCarModelQuery = (series) => {
   return `
     SELECT car_model
     FROM car_model
@@ -43,7 +44,7 @@ export const getSelectCarModelQuery: IGetSelectCarModelQuery = series => {
 };
 
 /** 차량 디테일 정보를 요청하는 쿼리문 반환  */
-export const getSelectCarDetailQuery: IGetSelectCarDetailQuery = model => {
+export const getSelectCarDetailQuery: IGetSelectCarDetailQuery = (model) => {
   return `
     SELECT car_detail
     FROM car_model_detail
@@ -56,7 +57,7 @@ export const getSelectCarDetailQuery: IGetSelectCarDetailQuery = model => {
 /** 차량 등급 정보를 요청하는 쿼리문 반환  */
 export const getSelectCarGradeQuery: IGetSelectCarGradeQuery = (model, detail) => {
   return `
-    SELECT car_grade, car_price
+    SELECT car_grade
     FROM car_model_detail_grade
     WHERE car_detail_id = (
       SELECT car_detail_id 
@@ -64,6 +65,25 @@ export const getSelectCarGradeQuery: IGetSelectCarGradeQuery = (model, detail) =
       WHERE car_detail = "${detail}" AND car_model_id = (
         SELECT car_model_id FROM car_model WHERE car_model = "${model}"
       )
+    )
+  `;
+};
+
+/** 차량 가격 정보 요청하는 쿼리문 반환 */
+export const gtSelectCarPriceQuery: IGetSelectCarPriceQuery = (model, detail, grade) => {
+  return `
+    SELECT car_price
+    FROM car_model_detail_grade
+    WHERE car_grade_id = (
+      SELECT car_grade_id 
+      FROM car_model_detail_grade 
+      WHERE car_grade = "${grade}" AND car_detail_id = (
+        SELECT car_detail_id 
+        FROM car_model_detail
+        WHERE car_detail = "${detail}" AND car_model_id = (
+          SELECT car_model_id FROM car_model WHERE car_model = "${model}"
+        )
+      ) 
     )
   `;
 };

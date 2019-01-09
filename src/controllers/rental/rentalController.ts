@@ -8,10 +8,19 @@ import {
   selectCarModelList,
   selectCarDetailList,
   selectCarGradeList,
+  selectCarPrice,
   selectCarOptionList
 } from "../../models/car/RentalModel";
 import { AsyncController } from "../../_@types/Controllers";
-import { IBrandList, ISeriesList, IModelList, IDetailList, IGradeList, IOptionList } from "../../_@types/Models/Car";
+import {
+  IBrandList,
+  ISeriesList,
+  IModelList,
+  IDetailList,
+  IGradeList,
+  IPriceList,
+  IOptionList
+} from "../../_@types/Models/Car";
 import ResponseManager from "../util/ResponseManager";
 
 /** 차량 제조사 정보 요청 */
@@ -75,6 +84,11 @@ export const getOptionListController: AsyncController = async (req, res) => {
   const grade = decodeURI(encodedGrade);
 
   const responseManager = new ResponseManager(res);
+  const priceList: IPriceList[] = await selectCarPrice(model, detail, grade);
+  const price = priceList[0].car_price;
   const optionList: IOptionList[] = await selectCarOptionList(model, detail, grade);
-  responseManager.json(200, `[+] The car option list with given grade was found successfully.`, { optionList });
+  responseManager.json(200, `[+] The car option list with given grade was found successfully.`, {
+    car_price: price,
+    optionList
+  });
 };

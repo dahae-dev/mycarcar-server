@@ -9,7 +9,7 @@ export interface IGetSelectCarQuery {
 }
 
 export interface ISelectCarList {
-  (): Promise<Query>;
+  (): Promise<any>;
 }
 
 export interface IGetSelectCarBrandQuery {
@@ -30,6 +30,10 @@ export interface IGetSelectCarDetailQuery {
 
 export interface IGetSelectCarGradeQuery {
   (model: string, detail: string): string;
+}
+
+export interface IGetSelectCarPriceQuery {
+  (model: string, detail: string, grade: string): string;
 }
 
 export interface IGetSelectCarOptionQuery {
@@ -56,6 +60,10 @@ export interface ISelectCarGradeList {
   (model: string, detail: string): Promise<any>;
 }
 
+export interface ISelectCarPrice {
+  (model: string, detail: string, grade: string): Promise<any>;
+}
+
 export interface ISelectCarOptionList {
   (model: string, detail: string, grade: string): Promise<any>;
 }
@@ -80,6 +88,23 @@ export interface IGradeList {
   car_grade: string;
 }
 
+export interface IPriceList {
+  car_price: number;
+}
+
 export interface IOptionList {
   car_option: string;
+  car_option_price: number;
+}
+
+export interface ICarList {
+  car_origin: string;
+  car_brand: string;
+  car_series: string;
+  car_model: string;
+  car_detail: string;
+  car_grade: string;
+  car_price: string;
+  car_option: string;
+  car_option_grade: string;
 }
