@@ -1,3 +1,7 @@
+/**
+ * 2주차 다해 - 차량 데이터를 불러오는 함수 및 DB로부터 받은 데이터에 대한 인터페이스 선언
+ */
+
 import { Query } from "mysql";
 
 export interface IGetSelectCarQuery {
@@ -33,25 +37,49 @@ export interface IGetSelectCarOptionQuery {
 }
 
 export interface ISelectCarBrandList {
-  (origin: string): Promise<Query>;
+  (origin: string): Promise<any>;
 }
 
 export interface ISelectCarSeriesList {
-  (brand: string): Promise<Query>;
+  (brand: string): Promise<any>;
 }
 
 export interface ISelectCarModelList {
-  (series: string): Promise<Query>;
+  (series: string): Promise<any>;
 }
 
 export interface ISelectCarDetailList {
-  (model: string): Promise<Query>;
+  (model: string): Promise<any>;
 }
 
 export interface ISelectCarGradeList {
-  (model: string, detail: string): Promise<Query>;
+  (model: string, detail: string): Promise<any>;
 }
 
 export interface ISelectCarOptionList {
-  (model: string, detail: string, grade: string): Promise<Query>;
+  (model: string, detail: string, grade: string): Promise<any>;
+}
+
+export interface IBrandList {
+  car_brand: string;
+}
+
+export interface ISeriesList {
+  car_series: string;
+}
+
+export interface IModelList {
+  car_model: string;
+}
+
+export interface IDetailList {
+  car_detail: string;
+}
+
+export interface IGradeList {
+  car_grade: string;
+}
+
+export interface IOptionList {
+  car_option: string;
 }
