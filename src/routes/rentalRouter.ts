@@ -10,7 +10,7 @@ import {
   getDetailListController,
   getGradeListController,
   getOptionListController
-} from "../controllers/rental/getCarData";
+} from "../controllers/rental/rentalController";
 
 const router = Router();
 
