@@ -12,6 +12,8 @@ import loginRouter from "./routes/loginRouter";
 import registerRouter from "./routes/registerRouter";
 import editAccountRouter from "./routes/editAccountRouter";
 import rentalRouter from "./routes/rentalRouter";
+import adminCarRouter from "./routes/adminCarRouter";
+import adminUserRouter from "./routes/adminUserRouter";
 
 import { checkDotenv } from "./util/checkDotenv";
 
@@ -37,6 +39,8 @@ app.use("/api/login", loginRouter);
 app.use("/api/register", registerRouter);
 app.use("/api/edit_account", checkToken, editAccountRouter);
 app.use("/api/rental", rentalRouter); // add checkToken
+app.use("/api/admin/car-list", adminCarRouter); // add checkAdmin 필요?
+app.use("/api/admin/user-list", adminUserRouter); // add checkAdmin 필요?
 app.use("*", appEndPoint);
 app.use(errorHandler());
 
