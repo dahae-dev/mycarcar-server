@@ -137,7 +137,7 @@ export const getOptionListController: AsyncController = async (req, res) => {
       statusCode: 404,
       statusMessage: `[-] The price & option list with given grade was NOT FOUND.`,
       car_price: "정보없음",
-      optionList: [{ car_option: "정보없음", car_price: "정보없음" }]
+      optionList: [{ car_option: "정보없음", car_option_price: 0 }]
     });
   }
 
@@ -151,7 +151,7 @@ export const getOptionListController: AsyncController = async (req, res) => {
   if (!optionList.length) {
     return responseManager.json(200, `[+] Price Found, [-] Option List Not Found`, {
       car_price: priceList[0].car_price,
-      optionList: [{ car_option: "정보없음", car_price: "정보없음" }]
+      optionList: [{ car_option: "정보없음", car_option_price: 0 }]
     });
   }
 
