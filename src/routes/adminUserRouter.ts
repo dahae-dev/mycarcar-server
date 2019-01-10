@@ -1,8 +1,14 @@
 import { Router } from "express";
-import { getUserListController } from "../controllers/admin/adminUserController";
+import {
+  getUserCountForAdminController,
+  getUserListForAdminController,
+  updateUserForAdminController
+} from "../controllers/admin/adminUserController";
 
 const router = Router();
 
-router.get("/", getUserListController);
+router.get("/", getUserCountForAdminController);
+router.get("/:page", getUserListForAdminController);
+router.patch("/update", updateUserForAdminController);
 
 export default router;
