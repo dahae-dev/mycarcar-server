@@ -103,12 +103,46 @@ export type GetUpdateCompanyUserQuery = ({ name, id, pw, email, phone, company, 
 /** 모델에서 유저정보를 업데이트를 하는 함수의 타입(회원정보 수정) */
 export type UpdateCompanyUser = ({ name, id, pw, email, phone, company, fax }: IUpdateForCompanyUser) => Promise<any>;
 
-export interface IGetSelectUserListQuery {
+export interface IGetSelectUserCountForAdminQuery {
   (): string;
 }
 
-export interface ISelectUserList {
+export interface IGetSelectUserListForAdminQuery {
+  (page: number): string;
+}
+
+export interface IGetUpdateUserForAdminQuery {
+  (updatedData: IUpdatedData): string;
+}
+
+export interface IGetUserLevelQuery {
+  (id: string): string;
+}
+
+export interface IUpdatedData {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  level: string;
+  company: string;
+  fax: string;
+}
+
+export interface ISelectUserCountForAdmin {
   (): Promise<any>;
+}
+
+export interface ISelectUserListForAdmin {
+  (page: number): Promise<any>;
+}
+
+export interface IUpdateUserForAdmin {
+  (updatedData: IUpdatedData): Promise<any>;
+}
+
+export interface ISelectUserLevel {
+  (id: string): Promise<any>;
 }
 
 export interface IUserList {
@@ -116,11 +150,8 @@ export interface IUserList {
   mb_name: string;
   mb_email: string;
   mb_phone: string;
-  mb_nick: string;
   mb_level: string;
   mb_company: string;
   mb_fax: string;
   mb_register_date: string;
-  mb_login_date: string;
-  mb_leave_date: string;
 }

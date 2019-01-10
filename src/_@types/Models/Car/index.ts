@@ -96,15 +96,3 @@ export interface IOptionList {
   car_option: string;
   car_option_price: number;
 }
-
-export interface ICarList {
-  car_origin: string;
-  car_brand: string;
-  car_series: string;
-  car_model: string;
-  car_detail: string;
-  car_grade: string;
-  car_price: string;
-  car_option: string;
-  car_option_grade: string;
-}
