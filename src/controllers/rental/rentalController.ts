@@ -29,6 +29,15 @@ export const getBrandListController: AsyncController = async (req, res) => {
 
   const responseManager = new ResponseManager(res);
   const brandList: IBrandList[] = await selectCarBrandList(origin);
+
+  if (!brandList.length) {
+    return responseManager.json(404, `[-] The car brand list with given origin was NOT FOUND.`, {
+      statusCode: 404,
+      statusMessage: `[-] The car brand list with given origin was NOT FOUND.`,
+      brandList: [{ car_brand: "정보없음" }]
+    });
+  }
+
   responseManager.json(200, `[+] The brand list with given origin was found successfully.`, { brandList });
 };
 
@@ -39,6 +48,15 @@ export const getSeriesListController: AsyncController = async (req, res) => {
 
   const responseManager = new ResponseManager(res);
   const seriesList: ISeriesList[] = await selectCarSeriesList(brand);
+
+  if (!seriesList.length) {
+    return responseManager.json(404, `[-] The car series list with given brand was NOT FOUND.`, {
+      statusCode: 404,
+      statusMessage: `[-] The car series list with given brand was NOT FOUND.`,
+      seriesList: [{ car_series: "정보없음" }]
+    });
+  }
+
   responseManager.json(200, `[+] The car series list with given brand was found successfully.`, { seriesList });
 };
 
@@ -49,6 +67,15 @@ export const getModelListController: AsyncController = async (req, res) => {
 
   const responseManager = new ResponseManager(res);
   const modelList: IModelList[] = await selectCarModelList(series);
+
+  if (!modelList.length) {
+    return responseManager.json(404, `[-] The car model list with given series was NOT FOUND.`, {
+      statusCode: 404,
+      statusMessage: `[-] The car model list with given series was NOT FOUND.`,
+      modelList: [{ car_model: "정보없음" }]
+    });
+  }
+
   responseManager.json(200, `[+] The car model list with given series was found successfully.`, { modelList });
 };
 
@@ -59,6 +86,15 @@ export const getDetailListController: AsyncController = async (req, res) => {
 
   const responseManager = new ResponseManager(res);
   const detailList: IDetailList[] = await selectCarDetailList(model);
+
+  if (!detailList.length) {
+    return responseManager.json(404, `[-] The car detail list with given model was NOT FOUND.`, {
+      statusCode: 404,
+      statusMessage: `[-] The car detail list with given model was NOT FOUND.`,
+      detailList: [{ car_detail: "정보없음" }]
+    });
+  }
+
   responseManager.json(200, `[+] The car detail list with given model was found successfully.`, { detailList });
 };
 
@@ -71,7 +107,16 @@ export const getGradeListController: AsyncController = async (req, res) => {
 
   const responseManager = new ResponseManager(res);
   const gradeList: IGradeList[] = await selectCarGradeList(model, detail);
-  responseManager.json(200, `[+] The car grade list with given detail was found successfully.`, { gradeList });
+
+  if (!gradeList.length) {
+    return responseManager.json(404, `[-] The car grade list with given model & detail was NOT FOUND.`, {
+      statusCode: 404,
+      statusMessage: `[-] The car grade list with given model & detail was NOT FOUND.`,
+      gradeList: [{ car_grade: "정보없음" }]
+    });
+  }
+
+  responseManager.json(200, `[+] The car grade list with given model & detail was found successfully.`, { gradeList });
 };
 
 /** 차량 옵션 정보 요청 */
@@ -85,10 +130,37 @@ export const getOptionListController: AsyncController = async (req, res) => {
 
   const responseManager = new ResponseManager(res);
   const priceList: IPriceList[] = await selectCarPrice(model, detail, grade);
-  const price = priceList[0].car_price;
   const optionList: IOptionList[] = await selectCarOptionList(model, detail, grade);
-  responseManager.json(200, `[+] The car option list with given grade was found successfully.`, {
-    car_price: price,
+
+  if (!priceList[0] && !optionList.length) {
+    return responseManager.json(404, `[-] The price & option list with given grade was NOT FOUND.`, {
+      statusCode: 404,
+      statusMessage: `[-] The price & option list with given grade was NOT FOUND.`,
+      car_price: "정보없음",
+      optionList: [{ car_option: "정보없음", car_price: "정보없음" }]
+    });
+  }
+
+  if (!priceList[0]) {
+    return responseManager.json(404, `[-] The price & option list with given grade was NOT FOUND.`, {
+      statusCode: 404,
+      statusMessage: `[-] The car price with given grade was NOT FOUND.`,
+      car_price: "정보없음",
+      optionList
+    });
+  }
+
+  if (!optionList.length) {
+    return responseManager.json(404, `[-] The price & option list with given grade was NOT FOUND.`, {
+      statusCode: 404,
+      statusMessage: `[-] The option list with given grade was NOT FOUND.`,
+      car_price: priceList[0].car_price,
+      optionList: [{ car_option: "정보없음", car_price: "정보없음" }]
+    });
+  }
+
+  responseManager.json(200, `[+] The price & option list with given grade was found successfully.`, {
+    car_price: priceList[0].car_price,
     optionList
   });
 };

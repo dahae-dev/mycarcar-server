@@ -14,6 +14,6 @@ export default class ResponseManager {
     }
     this.res.statusCode = statusCode;
     this.res.statusMessage = statusMessage;
-    this.res.end();
+    this.res.send(jsonData);
   }
 }
