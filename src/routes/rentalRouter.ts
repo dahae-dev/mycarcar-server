@@ -9,10 +9,13 @@ import {
   getModelListController,
   getDetailListController,
   getGradeListController,
-  getOptionListController
+  getOptionListController,
+  getCapitalListController,
 } from "../controllers/rental/rentalController";
 
 const router = Router();
+
+router.get("/capital-profit", getCapitalListController);
 
 router.get("/:origin", getBrandListController);
 router.get("/:origin/:brand", getSeriesListController);
