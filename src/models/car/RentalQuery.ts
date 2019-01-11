@@ -9,11 +9,12 @@ import {
   IGetSelectCarDetailQuery,
   IGetSelectCarGradeQuery,
   IGetSelectCarPriceQuery,
-  IGetSelectCarOptionQuery
+  IGetSelectCarOptionQuery,
+  IGetSelectCapitalQuery,
 } from "../../_@types/Models/Car";
 
 /** 차량 브랜드 정보를 요청하는 쿼리문 반환  */
-export const getSelectCarBrandQuery: IGetSelectCarBrandQuery = (origin) => {
+export const getSelectCarBrandQuery: IGetSelectCarBrandQuery = origin => {
   return `
     SELECT car_brand 
     FROM car_brand
@@ -22,7 +23,7 @@ export const getSelectCarBrandQuery: IGetSelectCarBrandQuery = (origin) => {
 };
 
 /** 차량 시리즈 정보를 요청하는 쿼리문 반환  */
-export const getSelectCarSeriesQuery: IGetSelectCarSeriesQuery = (brand) => {
+export const getSelectCarSeriesQuery: IGetSelectCarSeriesQuery = brand => {
   return `
     SELECT car_series
     FROM car_series
@@ -33,7 +34,7 @@ export const getSelectCarSeriesQuery: IGetSelectCarSeriesQuery = (brand) => {
 };
 
 /** 차량 모델 정보를 요청하는 쿼리문 반환  */
-export const getSelectCarModelQuery: IGetSelectCarModelQuery = (series) => {
+export const getSelectCarModelQuery: IGetSelectCarModelQuery = series => {
   return `
     SELECT car_model
     FROM car_model
@@ -44,7 +45,7 @@ export const getSelectCarModelQuery: IGetSelectCarModelQuery = (series) => {
 };
 
 /** 차량 디테일 정보를 요청하는 쿼리문 반환  */
-export const getSelectCarDetailQuery: IGetSelectCarDetailQuery = (model) => {
+export const getSelectCarDetailQuery: IGetSelectCarDetailQuery = model => {
   return `
     SELECT car_detail
     FROM car_model_detail
@@ -105,4 +106,8 @@ export const getSelectCarOptionQuery: IGetSelectCarOptionQuery = (model, detail,
       ) 
     )
   `;
+};
+
+export const getSelectCapitalQuery: IGetSelectCapitalQuery = () => {
+  return `SELECT * FROM car_capital`;
 };

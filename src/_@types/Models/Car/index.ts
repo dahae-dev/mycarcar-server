@@ -40,6 +40,10 @@ export interface IGetSelectCarOptionQuery {
   (model: string, detail: string, grade: string): string;
 }
 
+export interface IGetSelectCapitalQuery {
+  (): string;
+}
+
 export interface ISelectCarBrandList {
   (origin: string): Promise<any>;
 }
@@ -66,6 +70,10 @@ export interface ISelectCarPrice {
 
 export interface ISelectCarOptionList {
   (model: string, detail: string, grade: string): Promise<any>;
+}
+
+export interface ISelectCapitalList {
+  (): Promise<any>;
 }
 
 export interface IBrandList {
@@ -95,4 +103,9 @@ export interface IPriceList {
 export interface IOptionList {
   car_option: string;
   car_option_price: number;
+}
+
+export interface ICapitalList {
+  capital_name: string;
+  capital_profit: number;
 }
