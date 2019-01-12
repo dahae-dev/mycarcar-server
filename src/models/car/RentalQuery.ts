@@ -13,6 +13,7 @@ import {
   IGetSelectCapitalQuery,
   IGetInsertEstimateQuery,
   IGetSelectEstimateListQuery,
+  IGetSelectEstimateQuery,
 } from "../../_@types/Models/Car";
 
 /** 차량 브랜드 정보를 요청하는 쿼리문 반환  */
@@ -154,4 +155,8 @@ export const getInsertEstimateQuery: IGetInsertEstimateQuery = (
 
 export const getEstimateListQuery: IGetSelectEstimateListQuery = (id) => {
   return `SELECT * FROM car_estimate WHERE mb_id="${id}"`;
+};
+
+export const getEstimateQuery: IGetSelectEstimateQuery = (estimateId) => {
+  return `SELECT * FROM car_estimate WHERE car_estimate_no="${estimateId}"`;
 };
