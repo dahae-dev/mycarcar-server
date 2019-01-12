@@ -12,12 +12,14 @@ import {
   getOptionListController,
   getCapitalListController,
   postEstimateController,
+  getEstimateController,
 } from "../controllers/rental/rentalController";
 import { checkToken } from "../middlewares/checkToken";
 
 const router = Router();
 
 router.post("/estimate", checkToken, postEstimateController);
+router.get("/estimate/list", checkToken, getEstimateController);
 
 router.get("/capital-profit", getCapitalListController);
 

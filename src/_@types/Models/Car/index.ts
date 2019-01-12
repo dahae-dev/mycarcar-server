@@ -46,6 +46,7 @@ export interface IGetSelectCapitalQuery {
 
 export interface IGetInsertEstimateQuery {
   (
+    memberId: string,
     memberName: string,
     memberPhone: string,
     memberEmail: string,
@@ -65,6 +66,10 @@ export interface IGetInsertEstimateQuery {
     deposit: number,
     advancePay: number,
   ): string;
+}
+
+export interface IGetSelectEstimateListQuery {
+  (id: string): string;
 }
 
 export interface ISelectCarBrandList {
@@ -101,6 +106,7 @@ export interface ISelectCapitalList {
 
 export interface IInsertEstimate {
   (
+    memberId: string,
     memberName: string,
     memberPhone: string,
     memberEmail: string,
@@ -120,6 +126,10 @@ export interface IInsertEstimate {
     deposit: number,
     advancePay: number,
   ): Promise<any>;
+}
+
+export interface ISelectEstimateList {
+  (id: string): Promise<any>;
 }
 
 export interface IBrandList {
