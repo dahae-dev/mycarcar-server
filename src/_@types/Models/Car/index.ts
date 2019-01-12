@@ -72,6 +72,10 @@ export interface IGetSelectEstimateListQuery {
   (id: string): string;
 }
 
+export interface IGetSelectEstimateQuery {
+  (estimateId: number): string;
+}
+
 export interface ISelectCarBrandList {
   (origin: string): Promise<any>;
 }
@@ -130,6 +134,10 @@ export interface IInsertEstimate {
 
 export interface ISelectEstimateList {
   (id: string): Promise<any>;
+}
+
+export interface ISelectEstimate {
+  (estimateId: number): Promise<any>;
 }
 
 export interface IBrandList {
