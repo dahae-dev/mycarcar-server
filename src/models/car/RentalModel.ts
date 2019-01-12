@@ -11,6 +11,7 @@ import {
   gtSelectCarPriceQuery,
   getSelectCarOptionQuery,
   getSelectCapitalQuery,
+  getInsertEstimateQuery,
 } from "./RentalQuery";
 import {
   ISelectCarBrandList,
@@ -21,29 +22,30 @@ import {
   ISelectCarPrice,
   ISelectCarOptionList,
   ISelectCapitalList,
+  IInsertEstimate,
 } from "../../_@types/Models/Car";
 import { sendQuery } from "../../db";
 
 /** 쿼리문 실행을 통해 차량 브랜드 정보 불러오기 */
-export const selectCarBrandList: ISelectCarBrandList = origin => {
+export const selectCarBrandList: ISelectCarBrandList = (origin) => {
   const query = getSelectCarBrandQuery(origin);
   return sendQuery(query);
 };
 
 /** 쿼리문 실행을 통해 차량 시리즈 정보 불러오기 */
-export const selectCarSeriesList: ISelectCarSeriesList = brand => {
+export const selectCarSeriesList: ISelectCarSeriesList = (brand) => {
   const query = getSelectCarSeriesQuery(brand);
   return sendQuery(query);
 };
 
 /** 쿼리문 실행을 통해 차량 모델 정보 불러오기 */
-export const selectCarModelList: ISelectCarModelList = series => {
+export const selectCarModelList: ISelectCarModelList = (series) => {
   const query = getSelectCarModelQuery(series);
   return sendQuery(query);
 };
 
 /** 쿼리문 실행을 통해 차량 상세모델 정보 불러오기 */
-export const selectCarDetailList: ISelectCarDetailList = model => {
+export const selectCarDetailList: ISelectCarDetailList = (model) => {
   const query = getSelectCarDetailQuery(model);
   return sendQuery(query);
 };
@@ -68,5 +70,48 @@ export const selectCarOptionList: ISelectCarOptionList = (model, detail, grade) 
 
 export const selectCapitalList: ISelectCapitalList = () => {
   const query = getSelectCapitalQuery();
+  return sendQuery(query);
+};
+
+export const insertEstimate: IInsertEstimate = (
+  memberName,
+  memberPhone,
+  memberEmail,
+  origin,
+  brand,
+  series,
+  model,
+  detail,
+  grade,
+  option,
+  capital,
+  rentalPeriod,
+  insurancePlan,
+  carPrice,
+  carOptionPrice,
+  carFinalPrice,
+  deposit,
+  advancePay,
+) => {
+  const query = getInsertEstimateQuery(
+    memberName,
+    memberPhone,
+    memberEmail,
+    origin,
+    brand,
+    series,
+    model,
+    detail,
+    grade,
+    option,
+    capital,
+    rentalPeriod,
+    insurancePlan,
+    carPrice,
+    carOptionPrice,
+    carFinalPrice,
+    deposit,
+    advancePay,
+  );
   return sendQuery(query);
 };

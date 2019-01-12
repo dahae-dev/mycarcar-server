@@ -44,6 +44,29 @@ export interface IGetSelectCapitalQuery {
   (): string;
 }
 
+export interface IGetInsertEstimateQuery {
+  (
+    memberName: string,
+    memberPhone: string,
+    memberEmail: string,
+    origin: string,
+    brand: string,
+    series: string,
+    model: string,
+    detail: string,
+    grade: string,
+    option: string,
+    capital: string,
+    rentalPeriod: number,
+    insurancePlan: number,
+    carPrice: number,
+    carOptionPrice: number,
+    carFinalPrice: number,
+    deposit: number,
+    advancePay: number,
+  ): string;
+}
+
 export interface ISelectCarBrandList {
   (origin: string): Promise<any>;
 }
@@ -74,6 +97,29 @@ export interface ISelectCarOptionList {
 
 export interface ISelectCapitalList {
   (): Promise<any>;
+}
+
+export interface IInsertEstimate {
+  (
+    memberName: string,
+    memberPhone: string,
+    memberEmail: string,
+    origin: string,
+    brand: string,
+    series: string,
+    model: string,
+    detail: string,
+    grade: string,
+    option: string,
+    capital: string,
+    rentalPeriod: number,
+    insurancePlan: number,
+    carPrice: number,
+    carOptionPrice: number,
+    carFinalPrice: number,
+    deposit: number,
+    advancePay: number,
+  ): Promise<any>;
 }
 
 export interface IBrandList {
