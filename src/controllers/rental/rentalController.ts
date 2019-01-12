@@ -12,6 +12,7 @@ import {
   selectCarOptionList,
   selectCapitalList,
   insertEstimate,
+  selectEstimateList,
 } from "../../models/car/RentalModel";
 import { AsyncController } from "../../_@types/Controllers";
 import {
@@ -199,13 +200,15 @@ export const postEstimateController: AsyncController = async (req, res) => {
 
   const jwtManager = new JwtManager(req);
   const { id } = jwtManager.getDecodedToken();
-  const { mb_name, mb_phone, mb_email } = (await selectUser({ id }))[0];
+  const { mb_id, mb_name, mb_phone, mb_email } = (await selectUser({ id }))[0];
 
+  const memberId = mb_id;
   const memberName = mb_name;
   const memberPhone = mb_phone;
   const memberEmail = mb_email;
 
   insertEstimate(
+    memberId,
     memberName,
     memberPhone,
     memberEmail,
@@ -226,7 +229,22 @@ export const postEstimateController: AsyncController = async (req, res) => {
     advancePay,
   );
 
-  return responseManager.json(200, `[+] The capital list with given grade was found successfully.`, {
+  return responseManager.json(200, `[+] Estimate save successfully.`, {
+    statusCode: 200,
+    statusMessage: `[+] Estimate save successfully.`,
+  });
+};
+
+export const getEstimateController: AsyncController = async (req, res) => {
+  const responseManager = new ResponseManager(res);
+
+  const jwtManager = new JwtManager(req);
+  const { id } = jwtManager.getDecodedToken();
+
+  const estimateList = await selectEstimateList(id);
+
+  return responseManager.json(200, `[+] Estimate was found successfully.`, {
+    estimateList,
     statusCode: 200,
     statusMessage: `[+] The capital list with given grade was found successfully.`,
   });

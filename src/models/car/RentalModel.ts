@@ -12,6 +12,7 @@ import {
   getSelectCarOptionQuery,
   getSelectCapitalQuery,
   getInsertEstimateQuery,
+  getEstimateListQuery,
 } from "./RentalQuery";
 import {
   ISelectCarBrandList,
@@ -23,6 +24,7 @@ import {
   ISelectCarOptionList,
   ISelectCapitalList,
   IInsertEstimate,
+  ISelectEstimateList,
 } from "../../_@types/Models/Car";
 import { sendQuery } from "../../db";
 
@@ -74,6 +76,7 @@ export const selectCapitalList: ISelectCapitalList = () => {
 };
 
 export const insertEstimate: IInsertEstimate = (
+  memberId,
   memberName,
   memberPhone,
   memberEmail,
@@ -94,6 +97,7 @@ export const insertEstimate: IInsertEstimate = (
   advancePay,
 ) => {
   const query = getInsertEstimateQuery(
+    memberId,
     memberName,
     memberPhone,
     memberEmail,
@@ -113,5 +117,10 @@ export const insertEstimate: IInsertEstimate = (
     deposit,
     advancePay,
   );
+  return sendQuery(query);
+};
+
+export const selectEstimateList: ISelectEstimateList = async (id) => {
+  const query = getEstimateListQuery(id);
   return sendQuery(query);
 };
