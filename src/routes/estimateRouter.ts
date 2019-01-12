@@ -8,8 +8,6 @@ import {
 
 const router = Router();
 
-router.post("/", checkToken, postEstimateController);
-
 router.get("/list", checkToken, getEstimateListController);
 router.get("/:id", checkToken, getEstimateController);
 
