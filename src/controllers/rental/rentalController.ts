@@ -164,9 +164,9 @@ export const getOptionListController: AsyncController = async (req, res) => {
 };
 
 export const getCapitalListController: AsyncController = async (req, res) => {
-  const responseManager = new ResponseManager(res);
   const capitalList: ICapitalList[] = await selectCapitalList();
 
+  const responseManager = new ResponseManager(res);
   return responseManager.json(200, `[+] The capital list with given grade was found successfully.`, {
     statusCode: 200,
     statusMessage: `[+] The capital list with given grade was found successfully.`,
