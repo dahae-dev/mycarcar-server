@@ -1,13 +1,10 @@
 import { AsyncController } from "../../_@types/Controllers";
 import ResponseManager from "../util/ResponseManager";
 import JwtManager from "../../util/JwtManager";
-import { selectEstimate } from "../../models/car/RentalModel";
-import { selectEstimateList } from "../../models/car/RentalModel";
-import { insertEstimate } from "../../models/car/RentalModel";
 import { selectUser } from "../../models/user/UserModel";
+import { insertEstimate, selectEstimateList, selectEstimate } from "../../models/car/EstimateModel";
 
 export const postEstimateController: AsyncController = async (req, res) => {
-  const responseManager = new ResponseManager(res);
   const {
     origin,
     brand,
@@ -35,7 +32,7 @@ export const postEstimateController: AsyncController = async (req, res) => {
   const memberPhone = mb_phone;
   const memberEmail = mb_email;
 
-  insertEstimate(
+  const result = await insertEstimate(
     memberId,
     memberName,
     memberPhone,
@@ -56,6 +53,15 @@ export const postEstimateController: AsyncController = async (req, res) => {
     deposit,
     advancePay,
   );
+
+  const responseManager = new ResponseManager(res);
+  const insertResult = !result.affectedRows;
+  if (insertResult) {
+    return responseManager.json(412, `[-] Estimate Precondition Failed.`, {
+      statusCode: 412,
+      statusMessage: `[-] Estimate Precondition Failed.`,
+    });
+  }
 
   return responseManager.json(200, `[+] Estimate save successfully.`, {
     statusCode: 200,
