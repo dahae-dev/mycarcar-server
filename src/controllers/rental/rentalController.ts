@@ -11,6 +11,7 @@ import {
   selectCarPrice,
   selectCarOptionList,
   selectCapitalList,
+  insertEstimate,
 } from "../../models/car/RentalModel";
 import { AsyncController } from "../../_@types/Controllers";
 import {
@@ -24,6 +25,8 @@ import {
   ICapitalList,
 } from "../../_@types/Models/Car";
 import ResponseManager from "../util/ResponseManager";
+import { selectUser } from "../../models/user/UserModel";
+import JwtManager from "../../util/JwtManager";
 
 /** 차량 제조사 정보 요청 */
 export const getBrandListController: AsyncController = async (req, res) => {
@@ -171,5 +174,60 @@ export const getCapitalListController: AsyncController = async (req, res) => {
     statusCode: 200,
     statusMessage: `[+] The capital list with given grade was found successfully.`,
     capitalList,
+  });
+};
+
+export const postEstimateController: AsyncController = async (req, res) => {
+  const responseManager = new ResponseManager(res);
+  const {
+    origin,
+    brand,
+    series,
+    model,
+    detail,
+    grade,
+    option,
+    capital,
+    rentalPeriod,
+    insurancePlan,
+    carPrice,
+    carOptionPrice,
+    carFinalPrice,
+    deposit,
+    advancePay,
+  } = req.body;
+
+  const jwtManager = new JwtManager(req);
+  const { id } = jwtManager.getDecodedToken();
+  const { mb_name, mb_phone, mb_email } = (await selectUser({ id }))[0];
+
+  const memberName = mb_name;
+  const memberPhone = mb_phone;
+  const memberEmail = mb_email;
+
+  insertEstimate(
+    memberName,
+    memberPhone,
+    memberEmail,
+    origin,
+    brand,
+    series,
+    model,
+    detail,
+    grade,
+    option,
+    capital,
+    rentalPeriod,
+    insurancePlan,
+    carPrice,
+    carOptionPrice,
+    carFinalPrice,
+    deposit,
+    advancePay,
+  );
+
+  return responseManager.json(200, `[+] The capital list with given grade was found successfully.`, {
+    statusCode: 200,
+    statusMessage: `[+] The capital list with given grade was found successfully.`,
   });
 };
