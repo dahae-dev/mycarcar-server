@@ -1,29 +1,23 @@
-import {
-  IGetSelectEstimateListQuery,
-  IGetInsertEstimateQuery,
-  IGetSelectEstimateQuery
-} from "../../_@types/Models/Car";
-
-export const getInsertEstimateQuery: IGetInsertEstimateQuery = (
-  memberId,
-  memberName,
-  memberPhone,
-  memberEmail,
-  origin,
-  brand,
-  series,
-  model,
-  detail,
-  grade,
-  option,
-  capital,
-  rentalPeriod,
-  insurancePlan,
-  carPrice,
-  carOptionPrice,
-  carFinalPrice,
-  deposit,
-  advancePay
+export const getInsertEstimateQuery = (
+  memberId: string,
+  memberName: string,
+  memberPhone: string,
+  memberEmail: string,
+  origin: string,
+  brand: string,
+  series: string,
+  model: string,
+  detail: string,
+  grade: string,
+  option: string,
+  capital: string,
+  rentalPeriod: number,
+  insurancePlan: number,
+  carPrice: number,
+  carOptionPrice: number,
+  carFinalPrice: number,
+  deposit: number,
+  advancePay: number
 ) => {
   return `
   INSERT INTO car_estimate (
@@ -41,7 +35,7 @@ export const getInsertEstimateQuery: IGetInsertEstimateQuery = (
   `;
 };
 
-export const getEstimateListQuery: IGetSelectEstimateListQuery = (id) => {
+export const getEstimateListQuery = (id: string) => {
   return `
     SELECT
       car_estimate_no,
@@ -52,6 +46,6 @@ export const getEstimateListQuery: IGetSelectEstimateListQuery = (id) => {
   `;
 };
 
-export const getEstimateQuery: IGetSelectEstimateQuery = (estimateId) => {
+export const getEstimateQuery = (estimateId: number) => {
   return `SELECT * FROM car_estimate WHERE car_estimate_no="${estimateId}"`;
 };

@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { getUserController } from "../controllers/edit_account/get";
-import { updateUserController } from "../controllers/edit_account/posts/user";
-import { updateCompanyUserController } from "../controllers/edit_account/posts/company";
+import { getUserController } from "../controllers/edit_account/getUserController";
+import { patchUserController } from "../controllers/edit_account/patchUserController";
+import { patchCompanyUserController } from "../controllers/edit_account/patchCompanyUserController";
 
 const router = Router();
 
 router.get("/", getUserController);
-router.post("/user", updateUserController);
-router.post("/company", updateCompanyUserController);
+router.patch("/user", patchUserController);
+router.patch("/company", patchCompanyUserController);
 
 export default router;

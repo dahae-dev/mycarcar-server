@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { postRegisterCompanyUserController } from "../controllers/register/company";
-import { postRegisterUserController } from "../controllers/register/user";
+import { postRegisterCompanyUserController } from "../controllers/register/postRegisterCompanyUserController";
+import { postRegisterUserController } from "../controllers/register/postRegisterUserController";
 
 const router = Router();
 

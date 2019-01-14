@@ -2,11 +2,9 @@ import path from "path";
 import cors from "cors";
 import dotenv from "dotenv";
 import logger from "morgan";
-import express from "express";
+import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import errorHandler from "errorhandler";
-
-import { appEndPoint } from "./controllers/appController";
 
 import loginRouter from "./routes/loginRouter";
 import registerRouter from "./routes/registerRouter";
@@ -41,7 +39,11 @@ app.use("/api/edit_account", checkToken, editAccountRouter);
 app.use("/api/rental", rentalRouter);
 app.use("/api/estimate", estimateRouter);
 app.use("/api/admin/user-list", checkToken, checkSuperAdmin, adminUserRouter);
-app.use("*", appEndPoint);
+
+app.use("*", (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, "../../build/index.html"));
+});
+
 app.use(errorHandler());
 
 const { PORT, MODE, HOST } = process.env as IAppListenOption;

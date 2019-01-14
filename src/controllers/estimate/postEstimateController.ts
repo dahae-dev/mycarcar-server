@@ -1,10 +1,11 @@
-import { AsyncController } from "../../_@types/Controllers";
+import { Request, Response } from "express";
+
 import ResponseManager from "../util/ResponseManager";
 import JwtManager from "../../util/JwtManager";
 import { selectUser } from "../../models/user/UserModel";
-import { insertEstimate, selectEstimateList, selectEstimate } from "../../models/car/EstimateModel";
+import { insertEstimate } from "../../models/car/EstimateModel";
 
-export const postEstimateController: AsyncController = async (req, res) => {
+export const postEstimateController = async (req: Request, res: Response) => {
   const {
     origin,
     brand,
@@ -20,7 +21,7 @@ export const postEstimateController: AsyncController = async (req, res) => {
     carOptionPrice,
     carFinalPrice,
     deposit,
-    advancePay,
+    advancePay
   } = req.body;
 
   const jwtManager = new JwtManager(req);
@@ -51,7 +52,7 @@ export const postEstimateController: AsyncController = async (req, res) => {
     carOptionPrice,
     carFinalPrice,
     deposit,
-    advancePay,
+    advancePay
   );
 
   const responseManager = new ResponseManager(res);
@@ -59,39 +60,12 @@ export const postEstimateController: AsyncController = async (req, res) => {
   if (insertResult) {
     return responseManager.json(412, `[-] Estimate Precondition Failed.`, {
       statusCode: 412,
-      statusMessage: `[-] Estimate Precondition Failed.`,
+      statusMessage: `[-] Estimate Precondition Failed.`
     });
   }
 
   return responseManager.json(200, `[+] Estimate save successfully.`, {
     statusCode: 200,
-    statusMessage: `[+] Estimate save successfully.`,
-  });
-};
-
-export const getEstimateListController: AsyncController = async (req, res) => {
-  const jwtManager = new JwtManager(req);
-  const { id } = jwtManager.getDecodedToken();
-
-  const estimateList = await selectEstimateList(id);
-
-  const responseManager = new ResponseManager(res);
-  return responseManager.json(200, `[+] Estimate List was found successfully.`, {
-    estimateList,
-    statusCode: 200,
-    statusMessage: `[+] Estimate List was found successfully.`,
-  });
-};
-
-export const getEstimateController: AsyncController = async (req, res) => {
-  const estimateId = req.params.id as number;
-
-  const estimateInfo = (await selectEstimate(estimateId))[0];
-
-  const responseManager = new ResponseManager(res);
-  return responseManager.json(200, `[+] Estimate was found successfully.`, {
-    estimateInfo,
-    statusCode: 200,
-    statusMessage: `[+] Estimate was found successfully.`,
+    statusMessage: `[+] Estimate save successfully.`
   });
 };
