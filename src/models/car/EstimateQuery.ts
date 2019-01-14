@@ -1,7 +1,7 @@
 import {
   IGetSelectEstimateListQuery,
   IGetInsertEstimateQuery,
-  IGetSelectEstimateQuery,
+  IGetSelectEstimateQuery
 } from "../../_@types/Models/Car";
 
 export const getInsertEstimateQuery: IGetInsertEstimateQuery = (
@@ -23,7 +23,7 @@ export const getInsertEstimateQuery: IGetInsertEstimateQuery = (
   carOptionPrice,
   carFinalPrice,
   deposit,
-  advancePay,
+  advancePay
 ) => {
   return `
   INSERT INTO car_estimate (
@@ -35,7 +35,7 @@ export const getInsertEstimateQuery: IGetInsertEstimateQuery = (
   VALUES (
     "${memberId}", "${memberName}", "${memberPhone}", "${memberEmail}",
     "${origin}", "${brand}", "${series}", "${model}", "${detail}", "${grade}", "${option}",
-    "${capital}", ${rentalPeriod}, ${insurancePlan}, ${carPrice}, ${carOptionPrice}, ${carFinalPrice},
+    "${capital}", ${rentalPeriod}, "${insurancePlan}", ${carPrice}, ${carOptionPrice}, ${carFinalPrice},
     ${deposit}, ${advancePay}
   )
   `;
