@@ -1,9 +1,10 @@
-import { updateUser } from "../../../models/user/UserModel";
-import { IUpdateForUser } from "../../../_@types/Models/User";
-import ResponseManager from "../../../controllers/util/ResponseManager";
 import { Request, Response } from "express";
 
-export const updateUserController = async (req: Request, res: Response) => {
+import ResponseManager from "../util/ResponseManager";
+import { IUpdateForUser } from "../../_@types/Models/User";
+import { updateUser } from "../../models/user/UserModel";
+
+export const patchUserController = async (req: Request, res: Response) => {
   const { name, id, pw, email, phone }: IUpdateForUser = req.body;
   const responseManager = new ResponseManager(res);
 

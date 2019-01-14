@@ -1,8 +1,9 @@
+import { Request, Response } from "express";
+
 import ResponseManager from "../util/ResponseManager";
 import JwtManager from "../../util/JwtManager";
 import { selectUser } from "../../models/user/UserModel";
-import { insertEstimate, selectEstimateList, selectEstimate } from "../../models/car/EstimateModel";
-import { Request, Response } from "express";
+import { insertEstimate } from "../../models/car/EstimateModel";
 
 export const postEstimateController = async (req: Request, res: Response) => {
   const {
@@ -66,32 +67,5 @@ export const postEstimateController = async (req: Request, res: Response) => {
   return responseManager.json(200, `[+] Estimate save successfully.`, {
     statusCode: 200,
     statusMessage: `[+] Estimate save successfully.`
-  });
-};
-
-export const getEstimateListController = async (req: Request, res: Response) => {
-  const jwtManager = new JwtManager(req);
-  const { id } = jwtManager.getDecodedToken();
-
-  const estimateList = await selectEstimateList(id);
-
-  const responseManager = new ResponseManager(res);
-  return responseManager.json(200, `[+] Estimate List was found successfully.`, {
-    estimateList,
-    statusCode: 200,
-    statusMessage: `[+] Estimate List was found successfully.`
-  });
-};
-
-export const getEstimateController = async (req: Request, res: Response) => {
-  const estimateId = req.params.id as number;
-
-  const estimateInfo = (await selectEstimate(estimateId))[0];
-
-  const responseManager = new ResponseManager(res);
-  return responseManager.json(200, `[+] Estimate was found successfully.`, {
-    estimateInfo,
-    statusCode: 200,
-    statusMessage: `[+] Estimate was found successfully.`
   });
 };

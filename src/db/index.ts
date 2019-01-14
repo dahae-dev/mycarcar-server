@@ -20,7 +20,7 @@ con.connect((err) => {
   console.log("Database Connected!");
 });
 
-export const sendQuery = (query: string): Promise<Query> => {
+export const sendQuery = (query: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     con.query(query, (err, result) => {
       if (err) {
