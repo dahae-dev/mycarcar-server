@@ -5,30 +5,35 @@ import {
   getUpdateCompanyUserQuery,
   getInsertComnanyUserQuery
 } from "./UserQuery";
-import { SelectUser, InsertUser, UpdateUser, InsertCompanyUser, UpdateCompanyUser } from "../../_@types/Models/User";
+import {
+  IInsertForUser,
+  IInsertForCompanyUser,
+  IUpdateForUser,
+  IUpdateForCompanyUser
+} from "../../_@types/Models/User";
 import { sendQuery } from "../../db";
 
-export const selectUser: SelectUser = (data) => {
+export const selectUser = (data: { id: string }) => {
   const query = getSelectUserQuery(data);
   return sendQuery(query);
 };
 
-export const insertUser: InsertUser = (data) => {
+export const insertUser = (data: IInsertForUser) => {
   const query = getInsertUserQuery(data);
   return sendQuery(query);
 };
 
-export const insertCompanyUser: InsertCompanyUser = (data) => {
+export const insertCompanyUser = (data: IInsertForCompanyUser) => {
   const query = getInsertComnanyUserQuery(data);
   return sendQuery(query);
 };
 
-export const updateUser: UpdateUser = (data) => {
+export const updateUser = (data: IUpdateForUser) => {
   const query = getUpdateUserQuery(data);
   return sendQuery(query);
 };
 
-export const updateCompanyUser: UpdateCompanyUser = (data) => {
+export const updateCompanyUser = (data: IUpdateForCompanyUser) => {
   const query = getUpdateCompanyUserQuery(data);
   return sendQuery(query);
 };

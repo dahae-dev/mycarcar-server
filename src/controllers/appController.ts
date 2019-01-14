@@ -1,6 +1,6 @@
 import path from "path";
-import { Controller } from "../_@types/Controllers";
+import { Request, Response } from "express";
 
-export const appEndPoint: Controller = (req, res) => {
+export const appEndPoint = (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../../build/index.html"));
 };

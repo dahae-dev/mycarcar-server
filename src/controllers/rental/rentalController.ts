@@ -8,7 +8,6 @@ import {
   selectCarOptionList,
   selectCapitalList
 } from "../../models/car/RentalModel";
-import { AsyncController } from "../../_@types/Controllers";
 import {
   IBrandList,
   ISeriesList,
@@ -20,8 +19,9 @@ import {
   ICapitalList
 } from "../../_@types/Models/Car";
 import ResponseManager from "../util/ResponseManager";
+import { Request, Response } from "express";
 
-export const getBrandListController: AsyncController = async (req, res) => {
+export const getBrandListController = async (req: Request, res: Response) => {
   const origin = req.params.origin as string;
 
   const responseManager = new ResponseManager(res);
@@ -38,7 +38,7 @@ export const getBrandListController: AsyncController = async (req, res) => {
   responseManager.json(200, `[+] The brand list with given origin was found successfully.`, { brandList });
 };
 
-export const getSeriesListController: AsyncController = async (req, res) => {
+export const getSeriesListController = async (req: Request, res: Response) => {
   const encoded = req.params.brand as string;
   const brand = decodeURI(encoded);
 
@@ -56,7 +56,7 @@ export const getSeriesListController: AsyncController = async (req, res) => {
   responseManager.json(200, `[+] The car series list with given brand was found successfully.`, { seriesList });
 };
 
-export const getModelListController: AsyncController = async (req, res) => {
+export const getModelListController = async (req: Request, res: Response) => {
   const encoded = req.params.series as string;
   const series = decodeURI(encoded);
 
@@ -74,7 +74,7 @@ export const getModelListController: AsyncController = async (req, res) => {
   responseManager.json(200, `[+] The car model list with given series was found successfully.`, { modelList });
 };
 
-export const getDetailListController: AsyncController = async (req, res) => {
+export const getDetailListController = async (req: Request, res: Response) => {
   const encoded = req.params.model as string;
   const model = decodeURI(encoded);
 
@@ -92,7 +92,7 @@ export const getDetailListController: AsyncController = async (req, res) => {
   responseManager.json(200, `[+] The car detail list with given model was found successfully.`, { detailList });
 };
 
-export const getGradeListController: AsyncController = async (req, res) => {
+export const getGradeListController = async (req: Request, res: Response) => {
   const encodedModel = req.params.model as string;
   const model = decodeURI(encodedModel);
   const encodedDetail = req.params.detail as string;
@@ -112,7 +112,7 @@ export const getGradeListController: AsyncController = async (req, res) => {
   responseManager.json(200, `[+] The car grade list with given model & detail was found successfully.`, { gradeList });
 };
 
-export const getOptionListController: AsyncController = async (req, res) => {
+export const getOptionListController = async (req: Request, res: Response) => {
   const encodedModel = req.params.model as string;
   const model = decodeURI(encodedModel);
   const encodedDetail = req.params.detail as string;
@@ -153,7 +153,7 @@ export const getOptionListController: AsyncController = async (req, res) => {
   });
 };
 
-export const getCapitalListController: AsyncController = async (req, res) => {
+export const getCapitalListController = async (req: Request, res: Response) => {
   const capitalList: ICapitalList[] = await selectCapitalList();
 
   const responseManager = new ResponseManager(res);

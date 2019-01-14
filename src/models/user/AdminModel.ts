@@ -4,30 +4,25 @@ import {
   getUpdateUserForAdminQuery,
   getUserLevelQuery
 } from "./AdminQuery";
-import {
-  ISelectUserCountForAdmin,
-  ISelectUserListForAdmin,
-  IUpdateUserForAdmin,
-  ISelectUserLevel
-} from "../../_@types/Models/User";
+import { IUpdatedData } from "../../_@types/Models/User";
 import { sendQuery } from "../../db";
 
-export const selectUserCountForAdmin: ISelectUserCountForAdmin = () => {
+export const selectUserCountForAdmin = () => {
   const query = getSelectUserCountForAdminQuery();
   return sendQuery(query);
 };
 
-export const selectUserListForAdmin: ISelectUserListForAdmin = (page) => {
+export const selectUserListForAdmin = (page: number) => {
   const query = getSelectUserListForAdminQuery(page);
   return sendQuery(query);
 };
 
-export const updateUserForAdmin: IUpdateUserForAdmin = (updatedData) => {
+export const updateUserForAdmin = (updatedData: IUpdatedData) => {
   const query = getUpdateUserForAdminQuery(updatedData);
   return sendQuery(query);
 };
 
-export const selectUserLevel: ISelectUserLevel = (id) => {
+export const selectUserLevel = (id: string) => {
   const query = getUserLevelQuery(id);
   return sendQuery(query);
 };

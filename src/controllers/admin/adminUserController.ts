@@ -1,9 +1,9 @@
 import { selectUserCountForAdmin, selectUserListForAdmin, updateUserForAdmin } from "../../models/user/AdminModel";
-import { AsyncController } from "../../_@types/Controllers";
 import { IUserList, IUpdatedData } from "../../_@types/Models/User";
 import ResponseManager from "../util/ResponseManager";
+import { Request, Response } from "express";
 
-export const getUserCountForAdminController: AsyncController = async (req, res) => {
+export const getUserCountForAdminController = async (req: Request, res: Response) => {
   const responseManager = new ResponseManager(res);
   const userCount = await selectUserCountForAdmin();
   const totalCount: number = userCount[0]["count(*)"];
@@ -11,7 +11,7 @@ export const getUserCountForAdminController: AsyncController = async (req, res) 
   responseManager.json(200, `[+] The totalCount count of users was found successfully.`, { totalCount });
 };
 
-export const getUserListForAdminController: AsyncController = async (req, res) => {
+export const getUserListForAdminController = async (req: Request, res: Response) => {
   const page = req.params.page as number;
 
   const responseManager = new ResponseManager(res);
@@ -36,7 +36,7 @@ export const getUserListForAdminController: AsyncController = async (req, res) =
   responseManager.json(200, `[+] The user list per page was found successfully.`, { userList });
 };
 
-export const updateUserForAdminController: AsyncController = async (req, res) => {
+export const updateUserForAdminController = async (req: Request, res: Response) => {
   const updatedData: IUpdatedData = req.body;
 
   const responseManager = new ResponseManager(res);

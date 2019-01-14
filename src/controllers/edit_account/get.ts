@@ -1,10 +1,10 @@
 import JwtManager from "../../util/JwtManager";
 import { selectUser } from "../../models/user/UserModel";
-import { AsyncController } from "../../_@types/Controllers";
 import { IEditAccountForResponse, ISelectFromUser } from "../../_@types/Models/User";
 import ResponseManager from "../util/ResponseManager";
+import { Request, Response } from "express";
 
-export const getUserController: AsyncController = async (req, res) => {
+export const getUserController = async (req: Request, res: Response) => {
   const jwtManager = new JwtManager(req);
   const responseManager = new ResponseManager(res);
 

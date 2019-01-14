@@ -1,9 +1,9 @@
 import { updateCompanyUser } from "../../../models/user/UserModel";
-import { AsyncController } from "../../../_@types/Controllers";
 import { IUpdateForCompanyUser } from "../../../_@types/Models/User";
 import ResponseManager from "../../../controllers/util/ResponseManager";
+import { Request, Response } from "express";
 
-export const updateCompanyUserController: AsyncController = async (req, res) => {
+export const updateCompanyUserController = async (req: Request, res: Response) => {
   const jsonData: IUpdateForCompanyUser = req.body;
   const responseManager = new ResponseManager(res);
 

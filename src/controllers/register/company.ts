@@ -1,9 +1,9 @@
 import { selectUser, insertCompanyUser } from "../../models/user/UserModel";
-import { AsyncController } from "../../_@types/Controllers";
 import { IInsertForCompanyUser, ISelectFromUser } from "../../_@types/Models/User";
 import ResponseManager from "../util/ResponseManager";
+import { Request, Response } from "express";
 
-export const postRegisterCompanyUserController: AsyncController = async (req, res) => {
+export const postRegisterCompanyUserController = async (req: Request, res: Response) => {
   const insertForCompanyUser: IInsertForCompanyUser = req.body;
   const responseManager = new ResponseManager(res);
 
@@ -12,7 +12,6 @@ export const postRegisterCompanyUserController: AsyncController = async (req, re
   const hasNotUserInfomation = userInfomations[0] === undefined;
   if (hasNotUserInfomation) {
     await insertCompanyUser(insertForCompanyUser);
-
     return responseManager.json(200, "[+] Membership registration has been carried out normally.");
   }
 

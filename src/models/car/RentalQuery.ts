@@ -1,15 +1,4 @@
-import {
-  IGetSelectCarBrandQuery,
-  IGetSelectCarSeriesQuery,
-  IGetSelectCarModelQuery,
-  IGetSelectCarDetailQuery,
-  IGetSelectCarGradeQuery,
-  IGetSelectCarPriceQuery,
-  IGetSelectCarOptionQuery,
-  IGetSelectCapitalQuery
-} from "../../_@types/Models/Car";
-
-export const getSelectCarBrandQuery: IGetSelectCarBrandQuery = (origin) => {
+export const getSelectCarBrandQuery = (origin: string) => {
   return `
     SELECT car_brand
     FROM car_brand
@@ -17,7 +6,7 @@ export const getSelectCarBrandQuery: IGetSelectCarBrandQuery = (origin) => {
   `;
 };
 
-export const getSelectCarSeriesQuery: IGetSelectCarSeriesQuery = (brand) => {
+export const getSelectCarSeriesQuery = (brand: string) => {
   return `
     SELECT car_series
     FROM car_series
@@ -27,7 +16,7 @@ export const getSelectCarSeriesQuery: IGetSelectCarSeriesQuery = (brand) => {
   `;
 };
 
-export const getSelectCarModelQuery: IGetSelectCarModelQuery = (series) => {
+export const getSelectCarModelQuery = (series: string) => {
   return `
     SELECT car_model
     FROM car_model
@@ -37,7 +26,7 @@ export const getSelectCarModelQuery: IGetSelectCarModelQuery = (series) => {
   `;
 };
 
-export const getSelectCarDetailQuery: IGetSelectCarDetailQuery = (model) => {
+export const getSelectCarDetailQuery = (model: string) => {
   return `
     SELECT car_detail
     FROM car_model_detail
@@ -47,7 +36,7 @@ export const getSelectCarDetailQuery: IGetSelectCarDetailQuery = (model) => {
   `;
 };
 
-export const getSelectCarGradeQuery: IGetSelectCarGradeQuery = (model, detail) => {
+export const getSelectCarGradeQuery = (model: string, detail: string) => {
   return `
     SELECT car_grade
     FROM car_model_detail_grade
@@ -61,7 +50,7 @@ export const getSelectCarGradeQuery: IGetSelectCarGradeQuery = (model, detail) =
   `;
 };
 
-export const gtSelectCarPriceQuery: IGetSelectCarPriceQuery = (model, detail, grade) => {
+export const gtSelectCarPriceQuery = (model: string, detail: string, grade: string) => {
   return `
     SELECT car_price
     FROM car_model_detail_grade
@@ -79,7 +68,7 @@ export const gtSelectCarPriceQuery: IGetSelectCarPriceQuery = (model, detail, gr
   `;
 };
 
-export const getSelectCarOptionQuery: IGetSelectCarOptionQuery = (model, detail, grade) => {
+export const getSelectCarOptionQuery = (model: string, detail: string, grade: string) => {
   return `
     SELECT car_option, car_option_price
     FROM car_grade_option
@@ -97,6 +86,6 @@ export const getSelectCarOptionQuery: IGetSelectCarOptionQuery = (model, detail,
   `;
 };
 
-export const getSelectCapitalQuery: IGetSelectCapitalQuery = () => {
+export const getSelectCapitalQuery = () => {
   return `SELECT * FROM car_capital`;
 };

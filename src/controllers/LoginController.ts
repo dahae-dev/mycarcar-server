@@ -1,10 +1,11 @@
 import { selectUser } from "../models/user/UserModel";
 import jsonwebtoken, { SignOptions } from "jsonwebtoken";
-import { AsyncController, IJwtParam, IPayload } from "../_@types/Controllers";
+import { IJwtParam, IPayload } from "../_@types/Controllers";
 import { ISignInInfomation, ISelectFromUser } from "../_@types/Models/User";
 import ResponseManager from "./util/ResponseManager";
+import { Request, Response } from "express";
 
-export const postUserController: AsyncController = async (req, res) => {
+export const postUserController = async (req: Request, res: Response) => {
   const { id, pw }: ISignInInfomation = req.body;
   const responseManager = new ResponseManager(res);
 

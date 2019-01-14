@@ -1,9 +1,9 @@
 import { selectUser, insertUser } from "../../models/user/UserModel";
-import { AsyncController } from "../../_@types/Controllers";
 import { IInsertForUser, ISelectFromUser } from "../../_@types/Models/User";
 import ResponseManager from "../util/ResponseManager";
+import { Request, Response } from "express";
 
-export const postRegisterUserController: AsyncController = async (req, res) => {
+export const postRegisterUserController = async (req: Request, res: Response) => {
   const insertForUser: IInsertForUser = req.body;
   const responseManager = new ResponseManager(res);
 
