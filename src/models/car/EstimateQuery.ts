@@ -42,7 +42,14 @@ export const getInsertEstimateQuery: IGetInsertEstimateQuery = (
 };
 
 export const getEstimateListQuery: IGetSelectEstimateListQuery = (id) => {
-  return `SELECT * FROM car_estimate WHERE mb_id="${id}"`;
+  return `
+    SELECT
+      car_estimate_no,
+      capital,
+      car_brand, car_series, car_model, car_detail, car_grade, car_option,
+      at_date
+      FROM car_estimate WHERE mb_id="${id}"
+  `;
 };
 
 export const getEstimateQuery: IGetSelectEstimateQuery = (estimateId) => {
