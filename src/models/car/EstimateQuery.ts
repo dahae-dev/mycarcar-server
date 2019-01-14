@@ -44,7 +44,8 @@ export const getInsertEstimateQuery: IGetInsertEstimateQuery = (
 export const getEstimateListQuery: IGetSelectEstimateListQuery = (id) => {
   return `
     SELECT
-      mb_name,
+      car_estimate_no,
+      capital,
       car_brand, car_series, car_model, car_detail, car_grade, car_option,
       at_date
       FROM car_estimate WHERE mb_id="${id}"
