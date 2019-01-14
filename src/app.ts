@@ -22,20 +22,19 @@ import { checkSuperAdmin } from "./middlewares/checkSuperAdmin";
 import { corsOption } from "./middlewares/options";
 import { IAppListenOption } from "./_@types/Apps";
 
-/** 앱을 위한 환경설정 정보가 없으면 에러 발생. */
+import "./db";
+
 dotenv.config();
 checkDotenv();
 
 const app = express();
 
-/** 미들웨어 */
 app.use(logger("dev"));
 app.use(cors(corsOption));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../build")));
 
-/** 라우터 */
 app.use("/api/login", loginRouter);
 app.use("/api/register", registerRouter);
 app.use("/api/edit_account", checkToken, editAccountRouter);
@@ -45,7 +44,6 @@ app.use("/api/admin/user-list", checkToken, checkSuperAdmin, adminUserRouter);
 app.use("*", appEndPoint);
 app.use(errorHandler());
 
-/** 앱 실행 */
 const { PORT, MODE, HOST } = process.env as IAppListenOption;
 app.listen(PORT, () => {
   console.log(`App is running at http://${HOST}:${PORT} in ${MODE} mode`);

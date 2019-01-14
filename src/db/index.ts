@@ -21,7 +21,6 @@ con.connect((err) => {
   console.log("Database Connected!");
 });
 
-/** 데이터베이스에 쿼리를 전송. */
 export const sendQuery: SendQuery = (query) => {
   return new Promise((resolve, reject) => {
     con.query(query, (err, result) => {

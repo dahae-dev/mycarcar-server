@@ -1,9 +1,3 @@
-/**
- * 2주차 다해 - 차량 데이터를 불러오는 함수 및 DB로부터 받은 데이터에 대한 인터페이스 선언
- */
-
-import { Query } from "mysql";
-
 export interface IGetSelectCarQuery {
   (): string;
 }
@@ -64,7 +58,7 @@ export interface IGetInsertEstimateQuery {
     carOptionPrice: number,
     carFinalPrice: number,
     deposit: number,
-    advancePay: number,
+    advancePay: number
   ): string;
 }
 
@@ -128,7 +122,7 @@ export interface IInsertEstimate {
     carOptionPrice: number,
     carFinalPrice: number,
     deposit: number,
-    advancePay: number,
+    advancePay: number
   ): Promise<any>;
 }
 
