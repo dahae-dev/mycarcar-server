@@ -1,7 +1,3 @@
-/**
- * 2주차 다해 - 차량 정보 요청을 위한 /api/rental 라우터
- */
-
 import { Router } from "express";
 import {
   getBrandListController,
@@ -10,7 +6,7 @@ import {
   getDetailListController,
   getGradeListController,
   getOptionListController,
-  getCapitalListController,
+  getCapitalListController
 } from "../controllers/rental/rentalController";
 import { checkToken } from "../middlewares/checkToken";
 import { postEstimateController } from "../controllers/estimate/estimateController";

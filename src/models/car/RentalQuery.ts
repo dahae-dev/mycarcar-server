@@ -1,7 +1,3 @@
-/**
- * 2주차 다해 - 장기렌트 페이지에 불러올 데이터 가져오는 쿼리문
- */
-
 import {
   IGetSelectCarBrandQuery,
   IGetSelectCarSeriesQuery,
@@ -10,13 +6,9 @@ import {
   IGetSelectCarGradeQuery,
   IGetSelectCarPriceQuery,
   IGetSelectCarOptionQuery,
-  IGetSelectCapitalQuery,
-  IGetInsertEstimateQuery,
-  IGetSelectEstimateListQuery,
-  IGetSelectEstimateQuery,
+  IGetSelectCapitalQuery
 } from "../../_@types/Models/Car";
 
-/** 차량 브랜드 정보를 요청하는 쿼리문 반환  */
 export const getSelectCarBrandQuery: IGetSelectCarBrandQuery = (origin) => {
   return `
     SELECT car_brand
@@ -25,7 +17,6 @@ export const getSelectCarBrandQuery: IGetSelectCarBrandQuery = (origin) => {
   `;
 };
 
-/** 차량 시리즈 정보를 요청하는 쿼리문 반환  */
 export const getSelectCarSeriesQuery: IGetSelectCarSeriesQuery = (brand) => {
   return `
     SELECT car_series
@@ -36,7 +27,6 @@ export const getSelectCarSeriesQuery: IGetSelectCarSeriesQuery = (brand) => {
   `;
 };
 
-/** 차량 모델 정보를 요청하는 쿼리문 반환  */
 export const getSelectCarModelQuery: IGetSelectCarModelQuery = (series) => {
   return `
     SELECT car_model
@@ -47,7 +37,6 @@ export const getSelectCarModelQuery: IGetSelectCarModelQuery = (series) => {
   `;
 };
 
-/** 차량 디테일 정보를 요청하는 쿼리문 반환  */
 export const getSelectCarDetailQuery: IGetSelectCarDetailQuery = (model) => {
   return `
     SELECT car_detail
@@ -58,7 +47,6 @@ export const getSelectCarDetailQuery: IGetSelectCarDetailQuery = (model) => {
   `;
 };
 
-/** 차량 등급 정보를 요청하는 쿼리문 반환  */
 export const getSelectCarGradeQuery: IGetSelectCarGradeQuery = (model, detail) => {
   return `
     SELECT car_grade
@@ -73,7 +61,6 @@ export const getSelectCarGradeQuery: IGetSelectCarGradeQuery = (model, detail) =
   `;
 };
 
-/** 차량 가격 정보 요청하는 쿼리문 반환 */
 export const gtSelectCarPriceQuery: IGetSelectCarPriceQuery = (model, detail, grade) => {
   return `
     SELECT car_price
@@ -92,7 +79,6 @@ export const gtSelectCarPriceQuery: IGetSelectCarPriceQuery = (model, detail, gr
   `;
 };
 
-/** 차량 옵션 정보를 요청하는 쿼리문 반환  */
 export const getSelectCarOptionQuery: IGetSelectCarOptionQuery = (model, detail, grade) => {
   return `
     SELECT car_option, car_option_price

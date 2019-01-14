@@ -3,13 +3,12 @@ import {
   GetInsertUserQuery,
   GetInsertCompanyUserQuery,
   GetUpdateUserQuery,
-  GetUpdateCompanyUserQuery,
+  GetUpdateCompanyUserQuery
 } from "../../_@types/Models/User";
 
 const DB_NAME = "carkorea2";
 const TABLE_NAME = "n8_member";
 
-/** 유저 정보를 요청하는 쿼리문자열을 반환. */
 export const getSelectUserQuery: GetSelectUserQuery = (selectData) => {
   const { id } = selectData;
   return `
@@ -17,7 +16,6 @@ export const getSelectUserQuery: GetSelectUserQuery = (selectData) => {
   `;
 };
 
-/** 유저 정보를 저장하는 쿼리문자열을 반환. */
 export const getInsertUserQuery: GetInsertUserQuery = (registerData) => {
   const { name, id, pw, email, phone } = registerData;
   return `
@@ -26,7 +24,6 @@ export const getInsertUserQuery: GetInsertUserQuery = (registerData) => {
   `;
 };
 
-/** 캐피탈 관리자 유저 정보를 저장하는 쿼리문자열을 반환. */
 export const getInsertComnanyUserQuery: GetInsertCompanyUserQuery = (registerData) => {
   const { name, id, pw, email, phone, company, fax } = registerData;
   return `
@@ -35,14 +32,12 @@ export const getInsertComnanyUserQuery: GetInsertCompanyUserQuery = (registerDat
   `;
 };
 
-/** 유저 정보를 업데이트하는 쿼리문자열을 반환. */
 export const getUpdateUserQuery: GetUpdateUserQuery = (updateData) => {
   const { name, id, pw, email, phone } = updateData;
   // tslint:disable-next-line: max-line-length
   return `UPDATE ${DB_NAME}.${TABLE_NAME} SET mb_name="${name}", mb_id="${id}", mb_password="${pw}", mb_email="${email}", mb_phone="${phone}" WHERE mb_id="${id}"`;
 };
 
-/** 유저 정보를 업데이트하는 쿼리문자열을 반환. */
 export const getUpdateCompanyUserQuery: GetUpdateCompanyUserQuery = (updateData) => {
   const { name, id, pw, email, phone, company, fax } = updateData;
   // tslint:disable-next-line: max-line-length

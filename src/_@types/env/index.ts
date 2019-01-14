@@ -1,4 +1,3 @@
-/** 환경설정 객체의 인터페이스. */
 export interface IProcessEnv {
   MODE: string;
 
