@@ -1,9 +1,8 @@
 import { Router } from "express";
-import {
-  getUserCountForAdminController,
-  getUserListForAdminController,
-  updateUserForAdminController
-} from "../controllers/admin/adminUserController";
+
+import { getUserCountForAdminController } from "../controllers/admin/getUserCountForAdminController";
+import { getUserListForAdminController } from "../controllers/admin/getUserListForAdminController";
+import { updateUserForAdminController } from "../controllers/admin/updateUserForAdminController";
 
 const router = Router();
 
