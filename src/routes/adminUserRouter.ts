@@ -1,14 +1,12 @@
 import { Router } from "express";
-import {
-  getUserCountForAdminController,
-  getUserListForAdminController,
-  updateUserForAdminController
-} from "../controllers/admin/adminUserController";
+import AdminController from "../controllers/AdminController/AdminController";
 
 const router = Router();
 
-router.get("/", getUserCountForAdminController);
-router.get("/:page", getUserListForAdminController);
-router.patch("/update", updateUserForAdminController);
+const adminUserRouter = new AdminController();
+
+router.get("/", adminUserRouter.getUserCount);
+router.get("/:page", adminUserRouter.getUserList);
+router.patch("/update", adminUserRouter.updateUser);
 
 export default router;

@@ -1,10 +1,12 @@
 import { Router } from "express";
 import { checkToken } from "../middlewares/checkToken";
-import { getEstimateController, getEstimateListController } from "../controllers/estimate/estimateController";
+import EstimateController from "../controllers/EstimateController/EstimateController";
 
 const router = Router();
 
-router.get("/list", checkToken, getEstimateListController);
-router.get("/:id", checkToken, getEstimateController);
+const estimateController = new EstimateController();
+
+router.get("/list", checkToken, estimateController.getEstimateList);
+router.get("/:id", checkToken, estimateController.getEstimate);
 
 export default router;

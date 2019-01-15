@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { postRegisterCompanyUserController } from "../controllers/register/postRegisterCompanyUserController";
-import { postRegisterUserController } from "../controllers/register/postRegisterUserController";
+import RegisterController from "../controllers/RegisterController/RegisterController";
 
 const router = Router();
 
-router.post("/user", postRegisterUserController);
-router.post("/company", postRegisterCompanyUserController);
+const registerController = new RegisterController();
+
+router.post("/user", registerController.postNomalUser);
+router.post("/company", registerController.postCompanyUser);
 
 export default router;

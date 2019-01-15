@@ -12,6 +12,7 @@ export default class ResponseManager {
       this.res.json({ statusCode, statusMessage, ...jsonData });
       return;
     }
+
     this.res.statusCode = statusCode;
     this.res.statusMessage = statusMessage;
     this.res.send(jsonData);
