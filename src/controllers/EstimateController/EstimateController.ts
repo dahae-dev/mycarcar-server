@@ -2,25 +2,29 @@ import { Request, Response } from "express";
 
 import JwtManager from "../../util/JwtManager";
 import ResponseManager from "../util/ResponseManager";
-import { selectUser } from "../../models/user/UserModel";
 
-import { selectEstimate, selectEstimateList, insertEstimate } from "../../models/car/EstimateModel";
+import EstimateModel from "../../models/EstimateModel/EstimateModel";
+import UserModel from "../../models/UserModel/UserModel";
 
-class EstimateController {
-  req: Request;
-  res: Response;
+export default class EstimateController {
+  constructor() {
+    this.userModel = new UserModel();
+    this.estimateModel = new EstimateModel();
 
-  constructor(req: Request, res: Response) {
-    this.req = req;
-    this.res = res;
+    this.getEstimate = this.getEstimate.bind(this);
+    this.getEstimateList = this.getEstimateList.bind(this);
+    this.postEstimate = this.getEstimateList.bind(this);
   }
 
-  async getEstimate() {
-    const estimateId: number = this.req.params.id;
+  userModel: UserModel;
+  estimateModel: EstimateModel;
 
-    const estimateInfo = (await selectEstimate(estimateId))[0];
+  async getEstimate(req: Request, res: Response) {
+    const estimateId: number = req.params.id;
 
-    const responseManager = new ResponseManager(this.res);
+    const estimateInfo = (await this.estimateModel.selectEstimate(estimateId))[0];
+
+    const responseManager = new ResponseManager(res);
     return responseManager.json(200, `[+] Estimate was found successfully.`, {
       estimateInfo,
       statusCode: 200,
@@ -28,13 +32,13 @@ class EstimateController {
     });
   }
 
-  async getEstimateList() {
-    const jwtManager = new JwtManager(this.req);
+  async getEstimateList(req: Request, res: Response) {
+    const jwtManager = new JwtManager(req);
     const { id } = jwtManager.getDecodedToken();
 
-    const estimateList = await selectEstimateList(id);
+    const estimateList = await this.estimateModel.selectEstimateList(id);
 
-    const responseManager = new ResponseManager(this.res);
+    const responseManager = new ResponseManager(res);
     return responseManager.json(200, `[+] Estimate List was found successfully.`, {
       estimateList,
       statusCode: 200,
@@ -42,7 +46,7 @@ class EstimateController {
     });
   }
 
-  async postEstimate() {
+  async postEstimate(req: Request, res: Response) {
     const {
       origin,
       brand,
@@ -59,18 +63,18 @@ class EstimateController {
       carFinalPrice,
       deposit,
       advancePay
-    } = this.req.body;
+    } = req.body;
 
-    const jwtManager = new JwtManager(this.req);
+    const jwtManager = new JwtManager(req);
     const { id } = jwtManager.getDecodedToken();
-    const { mb_id, mb_name, mb_phone, mb_email } = (await selectUser({ id }))[0];
+    const { mb_id, mb_name, mb_phone, mb_email } = (await this.userModel.selectUser({ id }))[0];
 
     const memberId = mb_id;
     const memberName = mb_name;
     const memberPhone = mb_phone;
     const memberEmail = mb_email;
 
-    const result = await insertEstimate(
+    const result = await this.estimateModel.insertEstimate(
       memberId,
       memberName,
       memberPhone,
@@ -92,7 +96,7 @@ class EstimateController {
       advancePay
     );
 
-    const responseManager = new ResponseManager(this.res);
+    const responseManager = new ResponseManager(res);
     const insertResult = !result.affectedRows;
     if (insertResult) {
       return responseManager.json(412, `[-] Estimate Precondition Failed.`, {

@@ -13,31 +13,28 @@ import { Response, Request } from "express";
 
 import ResponseManager from "../util/ResponseManager";
 
-import {
-  selectCarBrandList,
-  selectCarSeriesList,
-  selectCarModelList,
-  selectCarDetailList,
-  selectCarGradeList,
-  selectCarPrice,
-  selectCarOptionList,
-  selectCapitalList
-} from "../../models/car/RentalModel";
+import CarModel from "../../models/CarModel/CarModel";
 
-class RentalController {
-  req: Request;
-  res: Response;
+export default class RentalController {
+  constructor() {
+    this.carModel = new CarModel();
 
-  constructor(req: Request, res: Response) {
-    this.req = req;
-    this.res = res;
+    this.getBrandList = this.getBrandList.bind(this);
+    this.getCapitalList = this.getCapitalList.bind(this);
+    this.getDetailList = this.getDetailList.bind(this);
+    this.getGradeList = this.getGradeList.bind(this);
+    this.getModelList = this.getModelList.bind(this);
+    this.getOptionList = this.getOptionList.bind(this);
+    this.getSeriesList = this.getSeriesList.bind(this);
   }
 
-  async getBrandList() {
-    const origin: string = this.req.params.origin;
+  carModel: CarModel;
 
-    const responseManager = new ResponseManager(this.res);
-    const brandList: IBrandList[] = await selectCarBrandList(origin);
+  async getBrandList(req: Request, res: Response) {
+    const origin: string = req.params.origin;
+
+    const responseManager = new ResponseManager(res);
+    const brandList: IBrandList[] = await this.carModel.selectCarBrandList(origin);
 
     if (!brandList.length) {
       return responseManager.json(404, `[-] The car brand list with given origin was NOT FOUND.`, {
@@ -50,12 +47,12 @@ class RentalController {
     responseManager.json(200, `[+] The brand list with given origin was found successfully.`, { brandList });
   }
 
-  async getSeriesList() {
-    const encoded: string = this.req.params.brand;
+  async getSeriesList(req: Request, res: Response) {
+    const encoded: string = req.params.brand;
     const brand = decodeURI(encoded);
 
-    const responseManager = new ResponseManager(this.res);
-    const seriesList: ISeriesList[] = await selectCarSeriesList(brand);
+    const responseManager = new ResponseManager(res);
+    const seriesList: ISeriesList[] = await this.carModel.selectCarSeriesList(brand);
 
     if (!seriesList.length) {
       return responseManager.json(404, `[-] The car series list with given brand was NOT FOUND.`, {
@@ -68,12 +65,12 @@ class RentalController {
     responseManager.json(200, `[+] The car series list with given brand was found successfully.`, { seriesList });
   }
 
-  async getModelList() {
-    const encoded: string = this.req.params.series;
+  async getModelList(req: Request, res: Response) {
+    const encoded: string = req.params.series;
     const series = decodeURI(encoded);
 
-    const responseManager = new ResponseManager(this.res);
-    const modelList: IModelList[] = await selectCarModelList(series);
+    const responseManager = new ResponseManager(res);
+    const modelList: IModelList[] = await this.carModel.selectCarModelList(series);
 
     if (!modelList.length) {
       return responseManager.json(404, `[-] The car model list with given series was NOT FOUND.`, {
@@ -86,12 +83,12 @@ class RentalController {
     responseManager.json(200, `[+] The car model list with given series was found successfully.`, { modelList });
   }
 
-  async getDetailList() {
-    const encoded: string = this.req.params.model;
+  async getDetailList(req: Request, res: Response) {
+    const encoded: string = req.params.model;
     const model = decodeURI(encoded);
 
-    const responseManager = new ResponseManager(this.res);
-    const detailList: IDetailList[] = await selectCarDetailList(model);
+    const responseManager = new ResponseManager(res);
+    const detailList: IDetailList[] = await this.carModel.selectCarDetailList(model);
 
     if (!detailList.length) {
       return responseManager.json(404, `[-] The car detail list with given model was NOT FOUND.`, {
@@ -104,14 +101,14 @@ class RentalController {
     responseManager.json(200, `[+] The car detail list with given model was found successfully.`, { detailList });
   }
 
-  async getGradeList() {
-    const encodedModel: string = this.req.params.model;
+  async getGradeList(req: Request, res: Response) {
+    const encodedModel: string = req.params.model;
     const model = decodeURI(encodedModel);
-    const encodedDetail: string = this.req.params.detail;
+    const encodedDetail: string = req.params.detail;
     const detail = decodeURI(encodedDetail);
 
-    const responseManager = new ResponseManager(this.res);
-    const gradeList: IGradeList[] = await selectCarGradeList(model, detail);
+    const responseManager = new ResponseManager(res);
+    const gradeList: IGradeList[] = await this.carModel.selectCarGradeList(model, detail);
 
     if (!gradeList.length) {
       return responseManager.json(404, `[-] The car grade list with given model & detail was NOT FOUND.`, {
@@ -126,17 +123,17 @@ class RentalController {
     });
   }
 
-  async getOptionList() {
-    const encodedModel = this.req.params.model as string;
+  async getOptionList(req: Request, res: Response) {
+    const encodedModel = req.params.model as string;
     const model = decodeURI(encodedModel);
-    const encodedDetail = this.req.params.detail as string;
+    const encodedDetail = req.params.detail as string;
     const detail = decodeURI(encodedDetail);
-    const encodedGrade = this.req.params.grade as string;
+    const encodedGrade = req.params.grade as string;
     const grade = decodeURI(encodedGrade);
 
-    const responseManager = new ResponseManager(this.res);
-    const priceList: IPriceList[] = await selectCarPrice(model, detail, grade);
-    const optionList: IOptionList[] = await selectCarOptionList(model, detail, grade);
+    const responseManager = new ResponseManager(res);
+    const priceList: IPriceList[] = await this.carModel.selectCarPrice(model, detail, grade);
+    const optionList: IOptionList[] = await this.carModel.selectCarOptionList(model, detail, grade);
 
     if (!priceList[0] && !optionList.length) {
       return responseManager.json(404, `[-] The price & option list with given grade was NOT FOUND.`, {
@@ -167,10 +164,10 @@ class RentalController {
     });
   }
 
-  async getCapitalList() {
-    const capitalList: ICapitalList[] = await selectCapitalList();
+  async getCapitalList(req: Request, res: Response) {
+    const capitalList: ICapitalList[] = await this.carModel.selectCapitalList();
 
-    const responseManager = new ResponseManager(this.res);
+    const responseManager = new ResponseManager(res);
     return responseManager.json(200, `[+] The capital list with given grade was found successfully.`, {
       statusCode: 200,
       statusMessage: `[+] The capital list with given grade was found successfully.`,

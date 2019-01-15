@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { getUserController } from "../controllers/edit_account/getUserController";
-import { patchUserController } from "../controllers/edit_account/patchUserController";
-import { patchCompanyUserController } from "../controllers/edit_account/patchCompanyUserController";
+import EditAccountContoller from "../controllers/EditAccountController/EditAccountContoller";
 
 const router = Router();
 
-router.get("/", getUserController);
-router.patch("/user", patchUserController);
-router.patch("/company", patchCompanyUserController);
+const editAccountController = new EditAccountContoller();
+
+router.get("/", editAccountController.getUser);
+router.patch("/user", editAccountController.patchUserController);
+router.patch("/company", editAccountController.patchCompanyUser);
 
 export default router;

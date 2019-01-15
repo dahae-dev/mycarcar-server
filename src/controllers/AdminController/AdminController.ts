@@ -4,31 +4,33 @@ import { Request, Response } from "express";
 
 import ResponseManager from "../util/ResponseManager";
 
-import { selectUserCountForAdmin, selectUserListForAdmin, updateUserForAdmin } from "../../models/user/AdminModel";
+import UserModel from "../../models/UserModel/UserModel";
 
-class AdminController {
-  private req: Request;
-  private res: Response;
+export default class AdminController {
+  constructor() {
+    this.userModel = new UserModel();
 
-  constructor(req: Request, res: Response) {
-    this.req = req;
-    this.res = res;
+    this.getUserCount = this.getUserCount.bind(this);
+    this.getUserList = this.getUserList.bind(this);
+    this.updateUser = this.updateUser.bind(this);
   }
 
-  async getUserCount() {
-    const responseManager = new ResponseManager(this.res);
+  private userModel: UserModel;
 
-    const userCount = await selectUserCountForAdmin();
+  async getUserCount(req: Request, res: Response) {
+    const responseManager = new ResponseManager(res);
+
+    const userCount = await this.userModel.selectUserCountForAdmin();
     const totalCount: number = userCount[0]["count(*)"];
 
     responseManager.json(200, `[+] The totalCount count of users was found successfully.`, { totalCount });
   }
 
-  async getUserList() {
-    const page: number = this.req.params.page;
+  async getUserList(req: Request, res: Response) {
+    const page: number = req.params.page;
 
-    const responseManager = new ResponseManager(this.res);
-    const userListData: IUserList[] = await selectUserListForAdmin(page);
+    const responseManager = new ResponseManager(res);
+    const userListData: IUserList[] = await this.userModel.selectUserListForAdmin(page);
     const userList = userListData.map((data) => {
       return {
         id: data.mb_id,
@@ -49,11 +51,11 @@ class AdminController {
     responseManager.json(200, `[+] The user list per page was found successfully.`, { userList });
   }
 
-  async updateUser() {
-    const updatedData: IUpdatedData = this.req.body;
+  async updateUser(req: Request, res: Response) {
+    const updatedData: IUpdatedData = req.body;
 
-    const responseManager = new ResponseManager(this.res);
-    const result = await updateUserForAdmin(updatedData);
+    const responseManager = new ResponseManager(res);
+    const result = await this.userModel.updateUserForAdmin(updatedData);
 
     if (result.affectedRows === 0) {
       return responseManager.json(404, `[-] The user data with given ID was NOT FOUND.`);

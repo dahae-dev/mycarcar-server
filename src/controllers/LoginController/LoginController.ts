@@ -7,22 +7,23 @@ import jsonwebtoken, { SignOptions } from "jsonwebtoken";
 
 import ResponseManager from "../util/ResponseManager";
 
-import { selectUser } from "../../models/user/UserModel";
+import UserModel from "../../models/UserModel/UserModel";
 
-class LoginController {
-  req: Request;
-  res: Response;
+export default class LoginController {
+  constructor() {
+    this.userModel = new UserModel();
 
-  constructor(req: Request, res: Response) {
-    this.req = req;
-    this.res = res;
+    this.postUser = this.postUser.bind(this);
   }
 
-  async postUser() {
-    const { id, pw }: ISignInInfomation = this.req.body;
-    const responseManager = new ResponseManager(this.res);
+  userModel: UserModel;
 
-    const userInfomations: ISelectFromUser[] = await selectUser({ id });
+  async postUser(req: Request, res: Response) {
+    const { id, pw }: ISignInInfomation = req.body;
+    const responseManager = new ResponseManager(res);
+
+    const userInfomations: ISelectFromUser[] = await this.userModel.selectUser({ id });
+
     const userInfomation = userInfomations[0];
 
     const hasNotUserInfomations = userInfomation === undefined;
@@ -42,7 +43,7 @@ class LoginController {
     };
 
     const rawtoken = jsonwebtoken.sign(payload, SECRET, options);
-    this.res.setHeader("x-access-token", rawtoken);
+    res.setHeader("x-access-token", rawtoken);
 
     responseManager.json(204, "[+] The token has been issued as normal.", { level: userInfomation.mb_level });
   }

@@ -4,43 +4,44 @@ import { Request, Response } from "express";
 
 import ResponseManager from "../util/ResponseManager";
 
-import { selectUser, insertUser, insertCompanyUser } from "../../models/user/UserModel";
+import UserModel from "../../models/UserModel/UserModel";
 
-class Register {
-  req: Request;
-  res: Response;
+export default class RegisterController {
+  constructor() {
+    this.userModel = new UserModel();
 
-  constructor(req: Request, res: Response) {
-    this.req = req;
-    this.res = res;
+    this.postCompanyUser = this.postCompanyUser.bind(this);
+    this.postNomalUser = this.postNomalUser.bind(this);
   }
 
-  async postNomalUser() {
-    const insertForUser: IInsertForUser = this.req.body;
-    const responseManager = new ResponseManager(this.res);
+  userModel: UserModel;
 
-    const userInfomations: ISelectFromUser[] = await selectUser({
+  async postNomalUser(req: Request, res: Response) {
+    const insertForUser: IInsertForUser = req.body;
+    const responseManager = new ResponseManager(res);
+
+    const userInfomations: ISelectFromUser[] = await this.userModel.selectUser({
       id: insertForUser.id
     });
 
     const hasNotUserInfomation = userInfomations[0] === undefined;
     if (hasNotUserInfomation) {
-      await insertUser(insertForUser);
+      await this.userModel.insertUser(insertForUser);
       return responseManager.json(200, "[+] Membership registration has been carried out normally.");
     }
 
     return responseManager.json(412, "[-] ID already exists.");
   }
 
-  async postCompanyUser() {
-    const insertForCompanyUser: IInsertForCompanyUser = this.req.body;
-    const responseManager = new ResponseManager(this.res);
+  async postCompanyUser(req: Request, res: Response) {
+    const insertForCompanyUser: IInsertForCompanyUser = req.body;
+    const responseManager = new ResponseManager(res);
 
-    const userInfomations: ISelectFromUser[] = await selectUser({ id: insertForCompanyUser.id });
+    const userInfomations: ISelectFromUser[] = await this.userModel.selectUser({ id: insertForCompanyUser.id });
 
     const hasNotUserInfomation = userInfomations[0] === undefined;
     if (hasNotUserInfomation) {
-      await insertCompanyUser(insertForCompanyUser);
+      await this.userModel.insertCompanyUser(insertForCompanyUser);
       return responseManager.json(200, "[+] Membership registration has been carried out normally.");
     }
 

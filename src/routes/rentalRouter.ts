@@ -1,27 +1,23 @@
 import { Router } from "express";
-import {
-  getBrandListController,
-  getSeriesListController,
-  getModelListController,
-  getDetailListController,
-  getGradeListController,
-  getOptionListController,
-  getCapitalListController
-} from "../controllers/rental/rentalController";
+
 import { checkToken } from "../middlewares/checkToken";
-import { postEstimateController } from "../controllers/estimate/estimateController";
+import EstimateController from "../controllers/EstimateController/EstimateController";
+import RentalController from "../controllers/RentalController/RentalController";
 
 const router = Router();
 
-router.post("/estimate", checkToken, postEstimateController);
+const estimateController = new EstimateController();
+const rentalController = new RentalController();
 
-router.get("/capital-profit", getCapitalListController);
+router.post("/estimate", checkToken, estimateController.postEstimate);
 
-router.get("/:origin", getBrandListController);
-router.get("/:origin/:brand", getSeriesListController);
-router.get("/:origin/:brand/:series", getModelListController);
-router.get("/:origin/:brand/:series/:model", getDetailListController);
-router.get("/:origin/:brand/:series/:model/:detail", getGradeListController);
-router.get("/:origin/:brand/:series/:model/:detail/:grade", getOptionListController);
+router.get("/capital-profit", rentalController.getCapitalList);
+
+router.get("/:origin", rentalController.getBrandList);
+router.get("/:origin/:brand", rentalController.getSeriesList);
+router.get("/:origin/:brand/:series", rentalController.getModelList);
+router.get("/:origin/:brand/:series/:model", rentalController.getDetailList);
+router.get("/:origin/:brand/:series/:model/:detail", rentalController.getGradeList);
+router.get("/:origin/:brand/:series/:model/:detail/:grade", rentalController.getOptionList);
 
 export default router;
