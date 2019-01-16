@@ -9,7 +9,7 @@ export default class ResponseManager {
 
   json(statusCode: number, statusMessage: string, jsonData = {}) {
     this.res.statusCode = statusCode;
-    this.res.statusMessage = statusMessage;
+    this.res.statusMessage = encodeURI(statusMessage);
     this.res.send(jsonData);
   }
 }

@@ -19,20 +19,25 @@ export default class LoginController {
   userModel: UserModel;
 
   async postUser(req: Request, res: Response) {
-    const { id, pw }: ISignInInfomation = req.body;
     const responseManager = new ResponseManager(res);
 
-    const userInfomations: ISelectFromUser[] = await this.userModel.selectUser({ id });
+    const { id, pw }: ISignInInfomation = req.body;
+    const selectedResult = await this.userModel.selectUser({ id });
 
+    if (selectedResult.isOk) {
+      return responseManager.json(412, "계정을 찾을 수 없습니다.");
+    }
+
+    const userInfomations: ISelectFromUser[] = selectedResult.data;
     const userInfomation = userInfomations[0];
 
     const hasNotUserInfomations = userInfomation === undefined;
     if (hasNotUserInfomations) {
-      return responseManager.json(412, "[-] No matching information exists.");
+      return responseManager.json(412, "아이디 또는 비밀번호가 틀렸습니다.");
     }
 
     if (userInfomation.mb_password !== pw) {
-      return responseManager.json(412, "[-] No matching information exists.");
+      return responseManager.json(412, "아이디 또는 비밀번호가 틀렸습니다.");
     }
 
     const payload: IPayload = { id };
@@ -45,6 +50,6 @@ export default class LoginController {
     const rawtoken = jsonwebtoken.sign(payload, SECRET, options);
     res.setHeader("x-access-token", rawtoken);
 
-    responseManager.json(200, "[+] The token has been issued as normal.", { level: userInfomation.mb_level });
+    responseManager.json(200, "로그인에 성공했습니다.", { level: userInfomation.mb_level });
   }
 }

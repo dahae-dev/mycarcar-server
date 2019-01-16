@@ -31,147 +31,134 @@ export default class RentalController {
   carModel: CarModel;
 
   async getBrandList(req: Request, res: Response) {
+    const responseManager = new ResponseManager(res);
+
     const origin: string = req.params.origin;
 
-    const responseManager = new ResponseManager(res);
-    const brandList: IBrandList[] = await this.carModel.selectCarBrandList(origin);
-
-    if (!brandList.length) {
-      return responseManager.json(404, `[-] The car brand list with given origin was NOT FOUND.`, {
-        statusCode: 404,
-        statusMessage: `[-] The car brand list with given origin was NOT FOUND.`,
+    const selectedResult = await this.carModel.selectCarBrandList(origin);
+    if (!selectedResult.isOk) {
+      return responseManager.json(404, `브랜드를 찾지 못했습니다.`, {
         brandList: [{ car_brand: "정보없음" }]
       });
     }
 
-    responseManager.json(200, `[+] The brand list with given origin was found successfully.`, { brandList });
+    const brandList: IBrandList[] = selectedResult.data;
+    const jsonData = { brandList };
+    responseManager.json(200, `브랜드를 찾았습니다.`, jsonData);
   }
 
   async getSeriesList(req: Request, res: Response) {
+    const responseManager = new ResponseManager(res);
+
     const encoded: string = req.params.brand;
     const brand = decodeURI(encoded);
 
-    const responseManager = new ResponseManager(res);
-    const seriesList: ISeriesList[] = await this.carModel.selectCarSeriesList(brand);
-
-    if (!seriesList.length) {
-      return responseManager.json(404, `[-] The car series list with given brand was NOT FOUND.`, {
-        statusCode: 404,
-        statusMessage: `[-] The car series list with given brand was NOT FOUND.`,
+    const selectedResult = await this.carModel.selectCarSeriesList(brand);
+    if (!selectedResult.isOk) {
+      return responseManager.json(404, `시리즈를 찾지 못했습니다.`, {
         seriesList: [{ car_series: "정보없음" }]
       });
     }
 
-    responseManager.json(200, `[+] The car series list with given brand was found successfully.`, { seriesList });
+    const seriesList: ISeriesList[] = selectedResult.data;
+    const jsonData = { seriesList };
+    responseManager.json(200, `시리즈를 찾았습니다.`, jsonData);
   }
 
   async getModelList(req: Request, res: Response) {
+    const responseManager = new ResponseManager(res);
+
     const encoded: string = req.params.series;
     const series = decodeURI(encoded);
 
-    const responseManager = new ResponseManager(res);
-    const modelList: IModelList[] = await this.carModel.selectCarModelList(series);
-
-    if (!modelList.length) {
-      return responseManager.json(404, `[-] The car model list with given series was NOT FOUND.`, {
-        statusCode: 404,
-        statusMessage: `[-] The car model list with given series was NOT FOUND.`,
+    const selectedResult = await this.carModel.selectCarModelList(series);
+    if (!selectedResult.isOk) {
+      return responseManager.json(404, `모델을 찾지 못했습니다.`, {
         modelList: [{ car_model: "정보없음" }]
       });
     }
 
-    responseManager.json(200, `[+] The car model list with given series was found successfully.`, { modelList });
+    const modelList: IModelList[] = selectedResult.data;
+    const jsonData = { modelList };
+    responseManager.json(200, `모델을 찾았습니다.`, jsonData);
   }
 
   async getDetailList(req: Request, res: Response) {
+    const responseManager = new ResponseManager(res);
+
     const encoded: string = req.params.model;
     const model = decodeURI(encoded);
 
-    const responseManager = new ResponseManager(res);
-    const detailList: IDetailList[] = await this.carModel.selectCarDetailList(model);
-
-    if (!detailList.length) {
-      return responseManager.json(404, `[-] The car detail list with given model was NOT FOUND.`, {
-        statusCode: 404,
-        statusMessage: `[-] The car detail list with given model was NOT FOUND.`,
+    const selectedResult = await this.carModel.selectCarDetailList(model);
+    if (!selectedResult.isOk) {
+      return responseManager.json(404, `상세모델을 찾지 못했습니다.`, {
         detailList: [{ car_detail: "정보없음" }]
       });
     }
 
-    responseManager.json(200, `[+] The car detail list with given model was found successfully.`, { detailList });
+    const detailList: IDetailList[] = selectedResult.data;
+    const jsonData = { detailList };
+    responseManager.json(200, `상세모델을 찾았습니다.`, jsonData);
   }
 
   async getGradeList(req: Request, res: Response) {
+    const responseManager = new ResponseManager(res);
+
     const encodedModel: string = req.params.model;
-    const model = decodeURI(encodedModel);
     const encodedDetail: string = req.params.detail;
+    const model = decodeURI(encodedModel);
     const detail = decodeURI(encodedDetail);
 
-    const responseManager = new ResponseManager(res);
-    const gradeList: IGradeList[] = await this.carModel.selectCarGradeList(model, detail);
-
-    if (!gradeList.length) {
-      return responseManager.json(404, `[-] The car grade list with given model & detail was NOT FOUND.`, {
-        statusCode: 404,
-        statusMessage: `[-] The car grade list with given model & detail was NOT FOUND.`,
+    const selectedResult = await this.carModel.selectCarGradeList(model, detail);
+    if (!selectedResult.isOk) {
+      return responseManager.json(404, `등급을 찾지 못했습니다.`, {
         gradeList: [{ car_grade: "정보없음" }]
       });
     }
 
-    responseManager.json(200, `[+] The car grade list with given model & detail was found successfully.`, {
-      gradeList
-    });
+    const gradeList: IGradeList[] = selectedResult.data;
+    const jsonData = { gradeList };
+    responseManager.json(200, `모델을 찾았습니다.`, jsonData);
   }
 
   async getOptionList(req: Request, res: Response) {
-    const encodedModel = req.params.model as string;
+    const responseManager = new ResponseManager(res);
+
+    const encodedModel: string = req.params.model;
+    const encodedDetail: string = req.params.detail;
+    const encodedGrade: string = req.params.grade;
     const model = decodeURI(encodedModel);
-    const encodedDetail = req.params.detail as string;
     const detail = decodeURI(encodedDetail);
-    const encodedGrade = req.params.grade as string;
     const grade = decodeURI(encodedGrade);
 
-    const responseManager = new ResponseManager(res);
-    const priceList: IPriceList[] = await this.carModel.selectCarPrice(model, detail, grade);
-    const optionList: IOptionList[] = await this.carModel.selectCarOptionList(model, detail, grade);
-
-    if (!priceList[0] && !optionList.length) {
-      return responseManager.json(404, `[-] The price & option list with given grade was NOT FOUND.`, {
-        statusCode: 404,
-        statusMessage: `[-] The price & option list with given grade was NOT FOUND.`,
+    const selectedResultOfPriceList = await this.carModel.selectCarPrice(model, detail, grade);
+    const selectedResultOfOptionList = await this.carModel.selectCarOptionList(model, detail, grade);
+    if (!selectedResultOfPriceList.isOk || !selectedResultOfOptionList.isOk) {
+      return responseManager.json(404, `차량가격과 옵션들을 찾지 못했습니다.`, {
         car_price: "정보없음",
         optionList: [{ car_option: "정보없음", car_option_price: 0 }]
       });
     }
 
-    if (!priceList[0]) {
-      return responseManager.json(200, `[+] Option List Found, [-] Price Not Found`, {
-        car_price: "정보없음",
-        optionList
-      });
-    }
-
-    if (!optionList.length) {
-      return responseManager.json(200, `[+] Price Found, [-] Option List Not Found`, {
-        car_price: priceList[0].car_price,
-        optionList: [{ car_option: "정보없음", car_option_price: 0 }]
-      });
-    }
-
-    responseManager.json(200, `[+] The price & option list with given grade was found successfully.`, {
-      car_price: priceList[0].car_price,
-      optionList
-    });
+    const priceList: IPriceList[] = selectedResultOfPriceList.data;
+    const optionList: IOptionList[] = selectedResultOfOptionList.data;
+    const jsonData = { car_price: priceList[0].car_price, optionList };
+    responseManager.json(200, `차량가격과 옵션을 찾았습니다.`, jsonData);
   }
 
   async getCapitalList(req: Request, res: Response) {
-    const capitalList: ICapitalList[] = await this.carModel.selectCapitalList();
-
     const responseManager = new ResponseManager(res);
-    return responseManager.json(200, `[+] The capital list with given grade was found successfully.`, {
-      statusCode: 200,
-      statusMessage: `[+] The capital list with given grade was found successfully.`,
-      capitalList
-    });
+
+    const selectedResult = await this.carModel.selectCapitalList();
+    if (selectedResult.isOk) {
+      return responseManager.json(404, `차량가격과 옵션들을 찾지 못했습니다.`, {
+        car_price: "정보없음",
+        optionList: [{ car_option: "정보없음", car_option_price: 0 }]
+      });
+    }
+
+    const capitalList: ICapitalList[] = selectedResult.data;
+    const jsonData = { capitalList };
+    return responseManager.json(200, `캐피탈 리스트를 찾았습니다.`, jsonData);
   }
 }

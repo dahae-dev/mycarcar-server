@@ -10,12 +10,17 @@ export const checkSuperAdmin = async (req: Request, res: Response, next: NextFun
   const responseManager = new ResponseManager(res);
 
   const requestedId = jwtManager.getDecodedToken().id;
-  const userLevel = (await userModel.selectUserLevel(requestedId))[0].mb_level;
+  const selectedResult = await userModel.selectUserLevel(requestedId);
+  if (!selectedResult.isOk) {
+    return responseManager.json(412, "유저정보 읽어오기를 실패하였습니다.");
+  }
+
+  const userLevel: number = selectedResult.data[0].mb_level;
   const isSuperAdmin = userLevel === 10;
 
   if (isSuperAdmin) {
     return next();
   }
 
-  return responseManager.json(403, "[-] Forbidden");
+  return responseManager.json(412, "[-] Forbidden");
 };

@@ -20,17 +20,25 @@ export default class AdminController {
   async getUserCount(req: Request, res: Response) {
     const responseManager = new ResponseManager(res);
 
-    const userCount = await this.userModel.selectUserCountForAdmin();
-    const totalCount: number = userCount[0]["count(*)"];
+    const selectedResult = await this.userModel.selectUserCountForAdmin();
+    if (!selectedResult.isOk) {
+      return responseManager.json(412, `유저수를 읽어오는데 실패하였습니다.`);
+    }
 
+    const totalCount: number = selectedResult.data[0]["count(*)"];
     responseManager.json(200, `[+] The totalCount count of users was found successfully.`, { totalCount });
   }
 
   async getUserList(req: Request, res: Response) {
+    const responseManager = new ResponseManager(res);
     const page: number = req.params.page;
 
-    const responseManager = new ResponseManager(res);
-    const userListData: IUserList[] = await this.userModel.selectUserListForAdmin(page);
+    const selectedResult = await this.userModel.selectUserListForAdmin(page);
+    if (!selectedResult.isOk) {
+      return responseManager.json(412, `전체 유저정보를 읽기에 실패하였습니다.`);
+    }
+
+    const userListData: IUserList[] = selectedResult.data;
     const userList = userListData.map((data) => {
       return {
         id: data.mb_id,
@@ -44,23 +52,18 @@ export default class AdminController {
       };
     });
 
-    if (!userList.length) {
-      return responseManager.json(404, `[-] The user list with given page was NOT FOUND.`);
-    }
-
-    responseManager.json(200, `[+] The user list per page was found successfully.`, { userList });
+    responseManager.json(200, `전체 유저정보를 성공적으로 불러왔습니다.`, { userList });
   }
 
   async updateUser(req: Request, res: Response) {
-    const updatedData: IUpdatedData = req.body;
-
     const responseManager = new ResponseManager(res);
-    const result = await this.userModel.updateUserForAdmin(updatedData);
 
-    if (result.affectedRows === 0) {
-      return responseManager.json(404, `[-] The user data with given ID was NOT FOUND.`);
+    const updatedData: IUpdatedData = req.body;
+    const updatedResult = await this.userModel.updateUserForAdmin(updatedData);
+    if (!updatedResult.isOk) {
+      return responseManager.json(412, `유저정보 수정에 실패하였습니다.`);
     }
 
-    responseManager.json(200, `[+] The user data with given ID was updated successfully.`);
+    responseManager.json(200, `유저정보를 성공적으로 수정하였습니다.`);
   }
 }

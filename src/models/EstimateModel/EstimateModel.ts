@@ -1,4 +1,4 @@
-import { sendQuery } from "../../db";
+import { selectQuery, insertQuery } from "../../db";
 
 import EstimateQuery from "../../querys/EstimateQuery/EstimateQuery";
 
@@ -11,12 +11,12 @@ export default class EstimateModel {
 
   selectEstimateList(id: string) {
     const query = this.estimateQuery.getEstimateList(id);
-    return sendQuery(query);
+    return selectQuery(query);
   }
 
   selectEstimate(estimateId: number) {
     const query = this.estimateQuery.getEstimate(estimateId);
-    return sendQuery(query);
+    return selectQuery(query);
   }
 
   insertEstimate(
@@ -61,6 +61,6 @@ export default class EstimateModel {
       deposit,
       advancePay
     );
-    return sendQuery(query);
+    return insertQuery(query);
   }
 }
