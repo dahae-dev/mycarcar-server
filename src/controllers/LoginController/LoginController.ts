@@ -45,6 +45,6 @@ export default class LoginController {
     const rawtoken = jsonwebtoken.sign(payload, SECRET, options);
     res.setHeader("x-access-token", rawtoken);
 
-    responseManager.json(204, "[+] The token has been issued as normal.", { level: userInfomation.mb_level });
+    responseManager.json(200, "[+] The token has been issued as normal.", { level: userInfomation.mb_level });
   }
 }
