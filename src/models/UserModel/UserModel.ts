@@ -6,7 +6,7 @@ import {
   IUpdatedData
 } from "../../_@types/Models/User";
 
-import { sendQuery } from "../../db";
+import { selectQuery, insertQuery, updateQuery } from "../../db";
 
 import UserQuery from "../../querys/UserQuery/UserQuery";
 import AdminQuery from "../../querys/AdminQuery/AdminQuery";
@@ -22,46 +22,46 @@ export default class UserModel {
 
   selectUser(data: { id: string }) {
     const query = this.userQuery.getSelectUser(data);
-    return sendQuery(query);
+    return selectQuery(query);
   }
 
   insertUser(data: IInsertForUser) {
     const query = this.userQuery.getInsertUser(data);
-    return sendQuery(query);
+    return insertQuery(query);
   }
 
   insertCompanyUser(data: IInsertForCompanyUser) {
     const query = this.userQuery.getInsertComnanyUser(data);
-    return sendQuery(query);
+    return insertQuery(query);
   }
 
   updateUser(data: IUpdateForUser) {
     const query = this.userQuery.getUpdateUser(data);
-    return sendQuery(query);
+    return updateQuery(query);
   }
 
   updateCompanyUser(data: IUpdateForCompanyUser) {
     const query = this.userQuery.getUpdateCompanyUser(data);
-    return sendQuery(query);
+    return updateQuery(query);
   }
 
   selectUserCountForAdmin() {
     const query = this.adminQuery.getSelectUserCount();
-    return sendQuery(query);
+    return selectQuery(query);
   }
 
   selectUserListForAdmin(page: number) {
     const query = this.adminQuery.getSelectUserList(page);
-    return sendQuery(query);
+    return selectQuery(query);
   }
 
   updateUserForAdmin(updatedData: IUpdatedData) {
     const query = this.adminQuery.getUpdateUser(updatedData);
-    return sendQuery(query);
+    return updateQuery(query);
   }
 
   selectUserLevel(id: string) {
     const query = this.adminQuery.getUserLevel(id);
-    return sendQuery(query);
+    return selectQuery(query);
   }
 }

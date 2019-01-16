@@ -17,30 +17,28 @@ export default class RegisterController {
   userModel: UserModel;
 
   async postNomalUser(req: Request, res: Response) {
-    const insertForUser: IInsertForUser = req.body;
     const responseManager = new ResponseManager(res);
 
-    const userInfomations: ISelectFromUser[] = await this.userModel.selectUser({
-      id: insertForUser.id
-    });
+    const insertForUser: IInsertForUser = req.body;
 
-    const hasNotUserInfomation = userInfomations[0] === undefined;
-    if (hasNotUserInfomation) {
+    const selectResult = await this.userModel.selectUser({ id: insertForUser.id });
+
+    if (selectResult.isOk) {
       await this.userModel.insertUser(insertForUser);
-      return responseManager.json(200, "[+] Membership registration has been carried out normally.");
+      return responseManager.json(200, "회원가입에 성공하였습니다.");
     }
 
-    return responseManager.json(412, "[-] ID already exists.");
+    return responseManager.json(412, "사용할 수 없는 아이디입니다.");
   }
 
   async postCompanyUser(req: Request, res: Response) {
-    const insertForCompanyUser: IInsertForCompanyUser = req.body;
     const responseManager = new ResponseManager(res);
 
-    const userInfomations: ISelectFromUser[] = await this.userModel.selectUser({ id: insertForCompanyUser.id });
+    const insertForCompanyUser: IInsertForCompanyUser = req.body;
+    const id = insertForCompanyUser.id;
+    const selectResult = await this.userModel.selectUser({ id });
 
-    const hasNotUserInfomation = userInfomations[0] === undefined;
-    if (hasNotUserInfomation) {
+    if (selectResult.isOk) {
       await this.userModel.insertCompanyUser(insertForCompanyUser);
       return responseManager.json(200, "[+] Membership registration has been carried out normally.");
     }

@@ -1,4 +1,4 @@
-import mysql, { Query } from "mysql";
+import mysql, { MysqlError } from "mysql";
 import dotenv from "dotenv";
 import path from "path";
 
@@ -20,14 +20,58 @@ con.connect((err) => {
   console.log("Database Connected!");
 });
 
-export const sendQuery = (query: string): Promise<any> => {
-  return new Promise((resolve, reject) => {
-    con.query(query, (err, result) => {
+interface IMysqlInsertResult {
+  isOk: boolean;
+}
+
+interface IMysqlUpdateResult {
+  isOk: boolean;
+}
+
+interface IMysqlSelectResult {
+  isOk: boolean;
+  data: any[];
+}
+
+export const insertQuery = (query: string): Promise<IMysqlInsertResult> => {
+  return new Promise((resolve) => {
+    con.query(query, (err) => {
       if (err) {
-        reject(err);
+        console.error("Mysql :: err.message :", err.message);
+        resolve({ isOk: false });
       }
 
-      resolve(result);
+      resolve({ isOk: true });
+    });
+  });
+};
+
+export const selectQuery = (query: string): Promise<IMysqlSelectResult> => {
+  return new Promise((resolve) => {
+    con.query(query, (err, result) => {
+      if (err) {
+        console.error("Mysql :: err.message :", err.message);
+        resolve({ isOk: false, data: [] });
+      }
+
+      if (!result.length) {
+        resolve({ isOk: false, data: result });
+      }
+
+      resolve({ isOk: true, data: result });
+    });
+  });
+};
+
+export const updateQuery = (query: string): Promise<IMysqlUpdateResult> => {
+  return new Promise((resolve) => {
+    con.query(query, (err) => {
+      if (err) {
+        console.error("Mysql :: err.message :", err.message);
+        resolve({ isOk: false });
+      }
+
+      resolve({ isOk: true });
     });
   });
 };

@@ -19,22 +19,44 @@ export default class EditAccountContoller {
 
   private userModel: UserModel;
 
+  async patchCompanyUser(req: Request, res: Response) {
+    const responseManager = new ResponseManager(res);
+
+    const jsonData: IUpdateForCompanyUser = req.body;
+    const updateedResult = await this.userModel.updateCompanyUser(jsonData);
+
+    if (!updateedResult.isOk) {
+      return responseManager.json(412, "유저정보 업데이트에 실패하였습니다..");
+    }
+
+    responseManager.json(200, "유저정보를 성공적으로 수정하였습니다.");
+  }
+
+  async patchUserController(req: Request, res: Response) {
+    const responseManager = new ResponseManager(res);
+
+    const { name, id, pw, email, phone }: IUpdateForUser = req.body;
+    const updateedResult = await this.userModel.updateUser({ name, id, pw, email, phone });
+
+    if (!updateedResult.isOk) {
+      return responseManager.json(412, "유저정보 업데이트에 실패하였습니다.");
+    }
+
+    responseManager.json(200, "유저정보를 성공적으로 수정하였습니다.");
+  }
+
   async getUser(req: Request, res: Response) {
     const jwtManager = new JwtManager(req);
     const responseManager = new ResponseManager(res);
 
     const idOfRequester = jwtManager.getDecodedToken().id;
+    const selectedResult = await this.userModel.selectUser({ id: idOfRequester });
 
-    const {
-      mb_company,
-      mb_phone,
-      mb_name,
-      mb_id,
-      mb_fax,
-      mb_email
-    }: ISelectFromUser = (await this.userModel.selectUser({
-      id: idOfRequester
-    }))[0];
+    if (!selectedResult.isOk) {
+      return responseManager.json(200, "유저정보를 불러오기를 실패하였습니다.");
+    }
+
+    const { mb_company, mb_phone, mb_name, mb_id, mb_fax, mb_email }: ISelectFromUser = selectedResult.data[0];
 
     const data: IEditAccountForResponse = {
       id: mb_id,
@@ -46,22 +68,6 @@ export default class EditAccountContoller {
       fax: mb_fax
     };
 
-    responseManager.json(200, "[+] Member information has been returned as normal.", data);
-  }
-
-  async patchCompanyUser(req: Request, res: Response) {
-    const jsonData: IUpdateForCompanyUser = req.body;
-    const responseManager = new ResponseManager(res);
-
-    await this.userModel.updateCompanyUser(jsonData);
-    responseManager.json(200, "[+] Member information has been modified as normal..");
-  }
-
-  async patchUserController(req: Request, res: Response) {
-    const { name, id, pw, email, phone }: IUpdateForUser = req.body;
-    const responseManager = new ResponseManager(res);
-
-    await this.userModel.updateUser({ name, id, pw, email, phone });
-    responseManager.json(200, "[+] Member information has been modified as normal..");
+    responseManager.json(200, "유저정보를 성공적으로 읽어왔습니다.", data);
   }
 }
