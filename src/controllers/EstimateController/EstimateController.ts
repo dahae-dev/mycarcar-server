@@ -13,7 +13,7 @@ export default class EstimateController {
 
     this.getEstimate = this.getEstimate.bind(this);
     this.getEstimateList = this.getEstimateList.bind(this);
-    this.postEstimate = this.getEstimateList.bind(this);
+    this.postEstimate = this.postEstimate.bind(this);
   }
 
   userModel: UserModel;
