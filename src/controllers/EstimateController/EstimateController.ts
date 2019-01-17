@@ -34,16 +34,12 @@ export default class EstimateController {
   constructor() {
     this.userModel = new UserModel();
     this.estimateModel = new EstimateModel();
-
-    this.getEstimate = this.getEstimate.bind(this);
-    this.getEstimateList = this.getEstimateList.bind(this);
-    this.postEstimate = this.postEstimate.bind(this);
   }
 
   userModel: UserModel;
   estimateModel: EstimateModel;
 
-  async getEstimate(req: Request, res: Response) {
+  getEstimate = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const estimateId: number = req.params.id;
@@ -55,9 +51,9 @@ export default class EstimateController {
 
     const estimateInfo: IEstimateInfo = selectedResult.data[0];
     return responseManager.json(200, `견적서를 찾았습니다.`, { estimateInfo });
-  }
+  };
 
-  async getEstimateList(req: Request, res: Response) {
+  getEstimateList = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
     const jwtManager = new JwtManager(req);
 
@@ -70,9 +66,9 @@ export default class EstimateController {
 
     const estimateList: IEstimateInfo[] = selectResult.data;
     return responseManager.json(200, `견적서 리스트를 찾았습니다.`, { estimateList });
-  }
+  };
 
-  async postEstimate(req: Request, res: Response) {
+  postEstimate = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const {
@@ -134,5 +130,5 @@ export default class EstimateController {
     }
 
     return responseManager.json(200, `견적서 저장이 완료되었습니다.`);
-  }
+  };
 }

@@ -9,15 +9,11 @@ import UserModel from "../../models/UserModel/UserModel";
 export default class AdminController {
   constructor() {
     this.userModel = new UserModel();
-
-    this.getUserCount = this.getUserCount.bind(this);
-    this.getUserList = this.getUserList.bind(this);
-    this.updateUser = this.updateUser.bind(this);
   }
 
   private userModel: UserModel;
 
-  async getUserCount(req: Request, res: Response) {
+  getUserCount = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const selectedResult = await this.userModel.selectUserCountForAdmin();
@@ -27,9 +23,9 @@ export default class AdminController {
 
     const totalCount: number = selectedResult.data[0]["count(*)"];
     responseManager.json(200, `[+] The totalCount count of users was found successfully.`, { totalCount });
-  }
+  };
 
-  async getUserList(req: Request, res: Response) {
+  getUserList = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
     const page: number = req.params.page;
 
@@ -53,9 +49,9 @@ export default class AdminController {
     });
 
     responseManager.json(200, `전체 유저정보를 성공적으로 불러왔습니다.`, { userList });
-  }
+  };
 
-  async updateUser(req: Request, res: Response) {
+  updateUser = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const updatedData: IUpdatedData = req.body;
@@ -65,5 +61,5 @@ export default class AdminController {
     }
 
     responseManager.json(200, `유저정보를 성공적으로 수정하였습니다.`);
-  }
+  };
 }
