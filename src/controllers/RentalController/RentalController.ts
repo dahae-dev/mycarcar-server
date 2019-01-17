@@ -150,7 +150,7 @@ export default class RentalController {
     const responseManager = new ResponseManager(res);
 
     const selectedResult = await this.carModel.selectCapitalList();
-    if (selectedResult.isOk) {
+    if (!selectedResult.isOk) {
       return responseManager.json(404, `차량가격과 옵션들을 찾지 못했습니다.`, {
         car_price: "정보없음",
         optionList: [{ car_option: "정보없음", car_option_price: 0 }]

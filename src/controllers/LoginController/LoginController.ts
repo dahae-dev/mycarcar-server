@@ -24,7 +24,7 @@ export default class LoginController {
     const { id, pw }: ISignInInfomation = req.body;
     const selectedResult = await this.userModel.selectUser({ id });
 
-    if (selectedResult.isOk) {
+    if (!selectedResult.isOk) {
       return responseManager.json(412, "계정을 찾을 수 없습니다.");
     }
 
