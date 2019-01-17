@@ -29,12 +29,9 @@ export default class LoginController {
     const userInfomations: ISelectFromUser[] = selectedResult.data;
     const userInfomation = userInfomations[0];
 
-    const hasNotUserInfomations = userInfomation === undefined;
-    if (hasNotUserInfomations) {
-      return responseManager.json(412, "아이디 또는 비밀번호가 틀렸습니다.");
-    }
-
-    if (userInfomation.mb_password !== pw) {
+    const hasUserInfo = userInfomation !== undefined;
+    const isMatchPw = userInfomation.mb_password !== pw;
+    if (hasUserInfo && isMatchPw) {
       return responseManager.json(412, "아이디 또는 비밀번호가 틀렸습니다.");
     }
 
@@ -48,6 +45,6 @@ export default class LoginController {
     const rawtoken = jsonwebtoken.sign(payload, SECRET, options);
     res.setHeader("x-access-token", rawtoken);
 
-    responseManager.json(200, "로그인에 성공했습니다.", { level: userInfomation.mb_level });
+    responseManager.json(200, "로그인에 성공했습니다.");
   };
 }

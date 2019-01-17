@@ -26,7 +26,7 @@ export default class RentalController {
     const responseManager = new ResponseManager(res);
 
     const type: string = req.params.type;
-    const target: number = req.params.target;
+    const target: number = parseInt(req.params.target, 10);
 
     switch (type) {
       case "brand":
@@ -119,7 +119,7 @@ export default class RentalController {
     return selectedResult.isOk
       ? responseManager.json(200, `캐피탈 리스트를 찾았습니다.`, jsonData)
       : responseManager.json(412, `차량가격과 옵션들을 찾지 못했습니다.`, {
-          car_price: "정보없음",
+          car_price: 0,
           optionList: [{ car_option: "정보없음", car_option_price: 0 }]
         });
   };

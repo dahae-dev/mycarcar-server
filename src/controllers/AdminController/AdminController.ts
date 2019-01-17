@@ -22,7 +22,7 @@ export default class AdminController {
     }
 
     const totalCount: number = selectedResult.data[0]["count(*)"];
-    responseManager.json(200, `[+] The totalCount count of users was found successfully.`, { totalCount });
+    responseManager.json(200, `유저수를 성공적으로 읽어왔습니다.`, { totalCount });
   };
 
   getUserList = async (req: Request, res: Response) => {
