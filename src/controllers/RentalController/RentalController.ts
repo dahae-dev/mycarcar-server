@@ -35,46 +35,55 @@ export default class RentalController {
         const selectedResultOfBrandList = isKorea
           ? await this.carModel.selectCarBrandList("korea")
           : await this.carModel.selectCarBrandList("foreign");
+        const brandList: IBrandList[] = selectedResultOfBrandList.data;
 
         return selectedResultOfBrandList.isOk
-          ? responseManager.json(200, "브랜드 정보를 성공적으로 찾았습니다.", { selectedResultOfBrandList })
-          : responseManager.json(404, `브랜드를 찾지 못했습니다.`, {
+          ? responseManager.json(200, "브랜드 정보를 성공적으로 찾았습니다.", { brandList })
+          : responseManager.json(412, `브랜드를 찾지 못했습니다.`, {
               brandList: [{ car_brand: "정보없음", car_brand_id: -1 }]
             });
 
       case "series":
         const brandId = target;
-        const selectedResultOfSeries = await this.carModel.selectCarSeriesList(brandId);
-        return selectedResultOfSeries.isOk
-          ? responseManager.json(200, "시리즈 정보를 성공적으로 찾았습니다.", { selectedResultOfSeries })
-          : responseManager.json(404, `시리즈를 찾지 못했습니다.`, {
+        const selectedResultOfSeriesList = await this.carModel.selectCarSeriesList(brandId);
+        const seriesList: ISeriesList[] = selectedResultOfSeriesList.data;
+
+        return selectedResultOfSeriesList.isOk
+          ? responseManager.json(200, "시리즈 정보를 성공적으로 찾았습니다.", { seriesList })
+          : responseManager.json(412, `시리즈를 찾지 못했습니다.`, {
               seriesList: [{ car_series: "정보없음", car_series_id: -1 }]
             });
 
       case "model":
         const seriesId = target;
-        const selectedResultOfModel = await this.carModel.selectCarModelList(seriesId);
-        return selectedResultOfModel.isOk
-          ? responseManager.json(200, "시리즈 정보를 성공적으로 찾았습니다.", { selectedResultOfModel })
-          : responseManager.json(404, `모델을 찾지 못했습니다.`, {
+        const selectedResultOfModelList = await this.carModel.selectCarModelList(seriesId);
+        const modelList: IModelList[] = selectedResultOfModelList.data;
+
+        return selectedResultOfModelList.isOk
+          ? responseManager.json(200, "시리즈 정보를 성공적으로 찾았습니다.", { modelList })
+          : responseManager.json(412, `모델을 찾지 못했습니다.`, {
               modelList: [{ car_model: "정보없음", car_model_id: -1 }]
             });
 
       case "detail":
         const modelId = target;
-        const selectedResultOfDetail = await this.carModel.selectCarDetailList(modelId);
-        return selectedResultOfDetail.isOk
-          ? responseManager.json(200, "상세모델 정보를 성공적으로 찾았습니다.", { selectedResultOfDetail })
-          : responseManager.json(404, `상세모델을 찾지 못했습니다.`, {
+        const selectedResultOfDetailList = await this.carModel.selectCarDetailList(modelId);
+        const detailList: IDetailList[] = selectedResultOfDetailList.data;
+
+        return selectedResultOfDetailList.isOk
+          ? responseManager.json(200, "상세모델 정보를 성공적으로 찾았습니다.", { detailList })
+          : responseManager.json(412, `상세모델을 찾지 못했습니다.`, {
               detailList: [{ car_detail: "정보없음", car_detail_id: -1 }]
             });
 
       case "grade":
         const detailId = target;
-        const selectedResultOfGrade = await this.carModel.selectCarGradeList(detailId);
-        return selectedResultOfGrade.isOk
-          ? responseManager.json(200, "등급 정보를 성공적으로 찾았습니다.", { selectedResultOfGrade })
-          : responseManager.json(404, `등급을 찾지 못했습니다.`, {
+        const selectedResultOfGradeList = await this.carModel.selectCarGradeList(detailId);
+        const gradeList: IGradeList[] = selectedResultOfGradeList.data;
+
+        return selectedResultOfGradeList.isOk
+          ? responseManager.json(200, "등급 정보를 성공적으로 찾았습니다.", { gradeList })
+          : responseManager.json(412, `등급을 찾지 못했습니다.`, {
               gradeList: [{ car_grade: "정보없음", car_grade_id: -1 }]
             });
 
@@ -90,8 +99,8 @@ export default class RentalController {
 
         return selectedResultOfPriceList.isOk && selectedResultOfOptionList.isOk
           ? responseManager.json(200, `차량가격과 옵션을 찾았습니다.`, jsonData)
-          : responseManager.json(404, `차량가격과 옵션들을 찾지 못했습니다.`, {
-              car_price: "정보없음",
+          : responseManager.json(412, `차량가격과 옵션들을 찾지 못했습니다.`, {
+              car_price: 0,
               optionList: [{ car_option: "정보없음", car_option_price: 0 }]
             });
 
@@ -109,7 +118,7 @@ export default class RentalController {
 
     return selectedResult.isOk
       ? responseManager.json(200, `캐피탈 리스트를 찾았습니다.`, jsonData)
-      : responseManager.json(404, `차량가격과 옵션들을 찾지 못했습니다.`, {
+      : responseManager.json(412, `차량가격과 옵션들을 찾지 못했습니다.`, {
           car_price: "정보없음",
           optionList: [{ car_option: "정보없음", car_option_price: 0 }]
         });

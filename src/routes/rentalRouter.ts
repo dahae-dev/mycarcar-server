@@ -11,13 +11,6 @@ const rentalController = new RentalController();
 
 router.post("/estimate", checkToken, estimateController.postEstimate);
 router.get("/capital-profit", rentalController.getCapitalList);
-
 router.get("/:type/:target", rentalController.getList);
-// router.get("/:origin", rentalController.getBrandList);
-// router.get("/:origin/:brand", rentalController.getSeriesList);
-// router.get("/:origin/:brand/:series", rentalController.getModelList);
-// router.get("/:origin/:brand/:series/:model", rentalController.getDetailList);
-// router.get("/:origin/:brand/:series/:model/:detail", rentalController.getGradeList);
-// router.get("/:origin/:brand/:series/:model/:detail/:grade", rentalController.getOptionList);
 
 export default router;
