@@ -8,12 +8,12 @@ export const checkToken = (req: Request, res: Response, next: NextFunction) => {
 
   const hasEncodedToken = jwtManager.hasEncodedToken();
   if (!hasEncodedToken) {
-    return responseManager.json(401, "[-] You don't have a token.");
+    return responseManager.json(401, "로그인을 해주세요.");
   }
 
   const isValidEncodedToken = jwtManager.isValidEncodedToken();
   if (!isValidEncodedToken) {
-    return responseManager.json(401, "[-] Invalid token.");
+    return responseManager.json(401, "로그인을 해주세요.");
   }
 
   const isValidToken = jwtManager.isValidToken();
@@ -21,5 +21,5 @@ export const checkToken = (req: Request, res: Response, next: NextFunction) => {
     return next();
   }
 
-  return responseManager.json(401, "[-] Expired token.");
+  return responseManager.json(401, "로그인을 해주세요.");
 };

@@ -35,7 +35,7 @@ export default class LoginController {
       return responseManager.json(412, "아이디 또는 비밀번호가 틀렸습니다.");
     }
 
-    const payload: IPayload = { id };
+    const payload: IPayload = { id, level: userInfomation.mb_level };
     const { HOST, PORT, SECRET, EXPIREIN } = process.env as IJwtParam;
     const options: SignOptions = {
       issuer: `${HOST}:${PORT}`,

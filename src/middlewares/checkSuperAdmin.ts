@@ -22,5 +22,5 @@ export const checkSuperAdmin = async (req: Request, res: Response, next: NextFun
     return next();
   }
 
-  return responseManager.json(412, "[-] Forbidden");
+  return responseManager.json(412, "접근권한이 없습니다.");
 };
