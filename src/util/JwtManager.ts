@@ -12,14 +12,6 @@ export default class JwtManager {
     this.req = req;
   }
 
-  hasEncodedToken(): boolean {
-    return this.req.headers["x-access-token"] !== undefined;
-  }
-
-  isValidEncodedToken(): boolean {
-    return typeof this.req.headers["x-access-token"] === "string";
-  }
-
   private getGarbageRawToken(): string {
     const { PORT, HOST, SECRET } = process.env as IProcessEnv;
     const options = { expiresIn: 0, issuer: `${PORT}:${HOST}` };
@@ -27,14 +19,12 @@ export default class JwtManager {
   }
 
   getEncodedToken(): string {
-    const isNomalEncodedToken = this.hasEncodedToken() && this.isValidEncodedToken();
+    const encodedToken = this.req.headers["x-access-token"] as string;
+    const hasEncodedToken = this.req.headers["x-access-token"] !== undefined;
+    const isValidEncodedToken = typeof this.req.headers["x-access-token"] === "string";
 
-    if (isNomalEncodedToken) {
-      const encodedToken = this.req.headers["x-access-token"] as string;
-      return encodedToken;
-    }
-
-    return this.getGarbageRawToken();
+    const isNomalEncodedToken = hasEncodedToken && isValidEncodedToken;
+    return isNomalEncodedToken ? encodedToken : this.getGarbageRawToken();
   }
 
   getDecodedToken(): IDecodedToken {
