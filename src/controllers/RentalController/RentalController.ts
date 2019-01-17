@@ -18,19 +18,11 @@ import CarModel from "../../models/CarModel/CarModel";
 export default class RentalController {
   constructor() {
     this.carModel = new CarModel();
-
-    this.getBrandList = this.getBrandList.bind(this);
-    this.getCapitalList = this.getCapitalList.bind(this);
-    this.getDetailList = this.getDetailList.bind(this);
-    this.getGradeList = this.getGradeList.bind(this);
-    this.getModelList = this.getModelList.bind(this);
-    this.getOptionList = this.getOptionList.bind(this);
-    this.getSeriesList = this.getSeriesList.bind(this);
   }
 
   carModel: CarModel;
 
-  async getBrandList(req: Request, res: Response) {
+  getBrandList = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const origin: string = req.params.origin;
@@ -45,9 +37,9 @@ export default class RentalController {
     const brandList: IBrandList[] = selectedResult.data;
     const jsonData = { brandList };
     responseManager.json(200, `브랜드를 찾았습니다.`, jsonData);
-  }
+  };
 
-  async getSeriesList(req: Request, res: Response) {
+  getSeriesList = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const encoded: string = req.params.brand;
@@ -63,9 +55,9 @@ export default class RentalController {
     const seriesList: ISeriesList[] = selectedResult.data;
     const jsonData = { seriesList };
     responseManager.json(200, `시리즈를 찾았습니다.`, jsonData);
-  }
+  };
 
-  async getModelList(req: Request, res: Response) {
+  getModelList = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const encoded: string = req.params.series;
@@ -81,9 +73,9 @@ export default class RentalController {
     const modelList: IModelList[] = selectedResult.data;
     const jsonData = { modelList };
     responseManager.json(200, `모델을 찾았습니다.`, jsonData);
-  }
+  };
 
-  async getDetailList(req: Request, res: Response) {
+  getDetailList = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const encoded: string = req.params.model;
@@ -99,9 +91,9 @@ export default class RentalController {
     const detailList: IDetailList[] = selectedResult.data;
     const jsonData = { detailList };
     responseManager.json(200, `상세모델을 찾았습니다.`, jsonData);
-  }
+  };
 
-  async getGradeList(req: Request, res: Response) {
+  getGradeList = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const encodedModel: string = req.params.model;
@@ -119,9 +111,9 @@ export default class RentalController {
     const gradeList: IGradeList[] = selectedResult.data;
     const jsonData = { gradeList };
     responseManager.json(200, `모델을 찾았습니다.`, jsonData);
-  }
+  };
 
-  async getOptionList(req: Request, res: Response) {
+  getOptionList = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const encodedModel: string = req.params.model;
@@ -144,9 +136,9 @@ export default class RentalController {
     const optionList: IOptionList[] = selectedResultOfOptionList.data;
     const jsonData = { car_price: priceList[0].car_price, optionList };
     responseManager.json(200, `차량가격과 옵션을 찾았습니다.`, jsonData);
-  }
+  };
 
-  async getCapitalList(req: Request, res: Response) {
+  getCapitalList = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const selectedResult = await this.carModel.selectCapitalList();
@@ -160,5 +152,5 @@ export default class RentalController {
     const capitalList: ICapitalList[] = selectedResult.data;
     const jsonData = { capitalList };
     return responseManager.json(200, `캐피탈 리스트를 찾았습니다.`, jsonData);
-  }
+  };
 }

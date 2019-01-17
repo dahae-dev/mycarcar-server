@@ -1,4 +1,4 @@
-import { IInsertForUser, ISelectFromUser, IInsertForCompanyUser } from "../../_@types/Models/User";
+import { IInsertForUser, IInsertForCompanyUser } from "../../_@types/Models/User";
 
 import { Request, Response } from "express";
 
@@ -9,14 +9,11 @@ import UserModel from "../../models/UserModel/UserModel";
 export default class RegisterController {
   constructor() {
     this.userModel = new UserModel();
-
-    this.postCompanyUser = this.postCompanyUser.bind(this);
-    this.postNomalUser = this.postNomalUser.bind(this);
   }
 
   userModel: UserModel;
 
-  async postNomalUser(req: Request, res: Response) {
+  postNomalUser = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const insertForUser: IInsertForUser = req.body;
@@ -29,9 +26,9 @@ export default class RegisterController {
     }
 
     return responseManager.json(412, "사용할 수 없는 아이디입니다.");
-  }
+  };
 
-  async postCompanyUser(req: Request, res: Response) {
+  postCompanyUser = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const insertForCompanyUser: IInsertForCompanyUser = req.body;
@@ -44,5 +41,5 @@ export default class RegisterController {
     }
 
     return responseManager.json(412, "[-] ID already exists.");
-  }
+  };
 }

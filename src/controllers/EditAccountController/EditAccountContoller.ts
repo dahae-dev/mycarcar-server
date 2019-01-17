@@ -11,15 +11,11 @@ import UserModel from "../../models/UserModel/UserModel";
 export default class EditAccountContoller {
   constructor() {
     this.userModel = new UserModel();
-
-    this.getUser = this.getUser.bind(this);
-    this.patchCompanyUser = this.patchCompanyUser.bind(this);
-    this.patchUserController = this.patchUserController.bind(this);
   }
 
   private userModel: UserModel;
 
-  async patchCompanyUser(req: Request, res: Response) {
+  patchCompanyUser = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const jsonData: IUpdateForCompanyUser = req.body;
@@ -30,9 +26,9 @@ export default class EditAccountContoller {
     }
 
     responseManager.json(200, "유저정보를 성공적으로 수정하였습니다.");
-  }
+  };
 
-  async patchUserController(req: Request, res: Response) {
+  patchUserController = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const { name, id, pw, email, phone }: IUpdateForUser = req.body;
@@ -43,9 +39,9 @@ export default class EditAccountContoller {
     }
 
     responseManager.json(200, "유저정보를 성공적으로 수정하였습니다.");
-  }
+  };
 
-  async getUser(req: Request, res: Response) {
+  getUser = async (req: Request, res: Response) => {
     const jwtManager = new JwtManager(req);
     const responseManager = new ResponseManager(res);
 
@@ -69,5 +65,5 @@ export default class EditAccountContoller {
     };
 
     responseManager.json(200, "유저정보를 성공적으로 읽어왔습니다.", data);
-  }
+  };
 }

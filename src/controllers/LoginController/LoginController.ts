@@ -12,13 +12,11 @@ import UserModel from "../../models/UserModel/UserModel";
 export default class LoginController {
   constructor() {
     this.userModel = new UserModel();
-
-    this.postUser = this.postUser.bind(this);
   }
 
   userModel: UserModel;
 
-  async postUser(req: Request, res: Response) {
+  postUser = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const { id, pw }: ISignInInfomation = req.body;
@@ -51,5 +49,5 @@ export default class LoginController {
     res.setHeader("x-access-token", rawtoken);
 
     responseManager.json(200, "로그인에 성공했습니다.", { level: userInfomation.mb_level });
-  }
+  };
 }
