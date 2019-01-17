@@ -20,7 +20,7 @@ export default class RegisterController {
 
     const selectResult = await this.userModel.selectUser({ id: insertForUser.id });
 
-    if (selectResult.isOk) {
+    if (!selectResult.isOk) {
       await this.userModel.insertUser(insertForUser);
       return responseManager.json(200, "회원가입에 성공하였습니다.");
     }
@@ -35,11 +35,11 @@ export default class RegisterController {
     const id = insertForCompanyUser.id;
     const selectResult = await this.userModel.selectUser({ id });
 
-    if (selectResult.isOk) {
+    if (!selectResult.isOk) {
       await this.userModel.insertCompanyUser(insertForCompanyUser);
-      return responseManager.json(200, "[+] Membership registration has been carried out normally.");
+      return responseManager.json(200, "회원가입에 성공하였습니다.");
     }
 
-    return responseManager.json(412, "[-] ID already exists.");
+    return responseManager.json(412, "사용할 수 없는 아이디입니다.");
   };
 }
