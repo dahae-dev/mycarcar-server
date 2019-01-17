@@ -22,135 +22,86 @@ export default class RentalController {
 
   carModel: CarModel;
 
-  getBrandList = async (req: Request, res: Response) => {
+  getList = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
-    const origin: string = req.params.origin;
+    const type: string = req.params.type;
+    const target: number = req.params.target;
 
-    const selectedResult = await this.carModel.selectCarBrandList(origin);
-    if (!selectedResult.isOk) {
-      return responseManager.json(404, `브랜드를 찾지 못했습니다.`, {
-        brandList: [{ car_brand: "정보없음" }]
-      });
+    switch (type) {
+      case "brand":
+        // target ( 0 : "korea", 1: "foreign" )
+        const isKorea = target === 0;
+        const selectedResultOfBrandList = isKorea
+          ? await this.carModel.selectCarBrandList("korea")
+          : await this.carModel.selectCarBrandList("foreign");
+
+        return selectedResultOfBrandList.isOk
+          ? responseManager.json(200, "브랜드 정보를 성공적으로 찾았습니다.", { selectedResultOfBrandList })
+          : responseManager.json(404, `브랜드를 찾지 못했습니다.`, { brandList: [{ car_brand: "정보없음" }] });
+
+      case "series":
+        const brandId = target;
+        const selectedResultOfSeries = await this.carModel.selectCarSeriesList(brandId);
+        return selectedResultOfSeries.isOk
+          ? responseManager.json(200, "시리즈 정보를 성공적으로 찾았습니다.", { selectedResultOfSeries })
+          : responseManager.json(404, `시리즈를 찾지 못했습니다.`, { seriesList: [{ car_series: "정보없음" }] });
+
+      case "model":
+        const seriesId = target;
+        const selectedResultOfModel = await this.carModel.selectCarModelList(seriesId);
+        return selectedResultOfModel.isOk
+          ? responseManager.json(200, "시리즈 정보를 성공적으로 찾았습니다.", { selectedResultOfModel })
+          : responseManager.json(404, `모델을 찾지 못했습니다.`, { modelList: [{ car_model: "정보없음" }] });
+
+      case "detail":
+        const modelId = target;
+        const selectedResultOfDetail = await this.carModel.selectCarDetailList(modelId);
+        return selectedResultOfDetail.isOk
+          ? responseManager.json(200, "상세모델 정보를 성공적으로 찾았습니다.", { selectedResultOfDetail })
+          : responseManager.json(404, `상세모델을 찾지 못했습니다.`, { detailList: [{ car_detail: "정보없음" }] });
+
+      case "grade":
+        const detailId = target;
+        const selectedResultOfGrade = await this.carModel.selectCarGradeList(detailId);
+        return selectedResultOfGrade.isOk
+          ? responseManager.json(200, "등급 정보를 성공적으로 찾았습니다.", { selectedResultOfGrade })
+          : responseManager.json(404, `등급을 찾지 못했습니다.`, { gradeList: [{ car_grade: "정보없음" }] });
+
+      case "option":
+        const gradeId = target;
+        const selectedResultOfPriceList = await this.carModel.selectCarPrice(gradeId);
+        const selectedResultOfOptionList = await this.carModel.selectCarOptionList(gradeId);
+
+        const priceList: IPriceList[] = selectedResultOfPriceList.data;
+        const optionList: IOptionList[] = selectedResultOfOptionList.data;
+
+        const jsonData = { car_price: priceList[0].car_price, optionList };
+
+        return selectedResultOfPriceList.isOk && selectedResultOfOptionList.isOk
+          ? responseManager.json(200, `차량가격과 옵션을 찾았습니다.`, jsonData)
+          : responseManager.json(404, `차량가격과 옵션들을 찾지 못했습니다.`, {
+              car_price: "정보없음",
+              optionList: [{ car_option: "정보없음", car_option_price: 0 }]
+            });
+
+      default:
+        return responseManager.json(412, "해당 정보를 찾을 수 없습니다.");
     }
-
-    const brandList: IBrandList[] = selectedResult.data;
-    const jsonData = { brandList };
-    responseManager.json(200, `브랜드를 찾았습니다.`, jsonData);
-  };
-
-  getSeriesList = async (req: Request, res: Response) => {
-    const responseManager = new ResponseManager(res);
-
-    const encoded: string = req.params.brand;
-    const brand = decodeURI(encoded);
-
-    const selectedResult = await this.carModel.selectCarSeriesList(brand);
-    if (!selectedResult.isOk) {
-      return responseManager.json(404, `시리즈를 찾지 못했습니다.`, {
-        seriesList: [{ car_series: "정보없음" }]
-      });
-    }
-
-    const seriesList: ISeriesList[] = selectedResult.data;
-    const jsonData = { seriesList };
-    responseManager.json(200, `시리즈를 찾았습니다.`, jsonData);
-  };
-
-  getModelList = async (req: Request, res: Response) => {
-    const responseManager = new ResponseManager(res);
-
-    const encoded: string = req.params.series;
-    const series = decodeURI(encoded);
-
-    const selectedResult = await this.carModel.selectCarModelList(series);
-    if (!selectedResult.isOk) {
-      return responseManager.json(404, `모델을 찾지 못했습니다.`, {
-        modelList: [{ car_model: "정보없음" }]
-      });
-    }
-
-    const modelList: IModelList[] = selectedResult.data;
-    const jsonData = { modelList };
-    responseManager.json(200, `모델을 찾았습니다.`, jsonData);
-  };
-
-  getDetailList = async (req: Request, res: Response) => {
-    const responseManager = new ResponseManager(res);
-
-    const encoded: string = req.params.model;
-    const model = decodeURI(encoded);
-
-    const selectedResult = await this.carModel.selectCarDetailList(model);
-    if (!selectedResult.isOk) {
-      return responseManager.json(404, `상세모델을 찾지 못했습니다.`, {
-        detailList: [{ car_detail: "정보없음" }]
-      });
-    }
-
-    const detailList: IDetailList[] = selectedResult.data;
-    const jsonData = { detailList };
-    responseManager.json(200, `상세모델을 찾았습니다.`, jsonData);
-  };
-
-  getGradeList = async (req: Request, res: Response) => {
-    const responseManager = new ResponseManager(res);
-
-    const encodedModel: string = req.params.model;
-    const encodedDetail: string = req.params.detail;
-    const model = decodeURI(encodedModel);
-    const detail = decodeURI(encodedDetail);
-
-    const selectedResult = await this.carModel.selectCarGradeList(model, detail);
-    if (!selectedResult.isOk) {
-      return responseManager.json(404, `등급을 찾지 못했습니다.`, {
-        gradeList: [{ car_grade: "정보없음" }]
-      });
-    }
-
-    const gradeList: IGradeList[] = selectedResult.data;
-    const jsonData = { gradeList };
-    responseManager.json(200, `모델을 찾았습니다.`, jsonData);
-  };
-
-  getOptionList = async (req: Request, res: Response) => {
-    const responseManager = new ResponseManager(res);
-
-    const encodedModel: string = req.params.model;
-    const encodedDetail: string = req.params.detail;
-    const encodedGrade: string = req.params.grade;
-    const model = decodeURI(encodedModel);
-    const detail = decodeURI(encodedDetail);
-    const grade = decodeURI(encodedGrade);
-
-    const selectedResultOfPriceList = await this.carModel.selectCarPrice(model, detail, grade);
-    const selectedResultOfOptionList = await this.carModel.selectCarOptionList(model, detail, grade);
-    if (!selectedResultOfPriceList.isOk || !selectedResultOfOptionList.isOk) {
-      return responseManager.json(404, `차량가격과 옵션들을 찾지 못했습니다.`, {
-        car_price: "정보없음",
-        optionList: [{ car_option: "정보없음", car_option_price: 0 }]
-      });
-    }
-
-    const priceList: IPriceList[] = selectedResultOfPriceList.data;
-    const optionList: IOptionList[] = selectedResultOfOptionList.data;
-    const jsonData = { car_price: priceList[0].car_price, optionList };
-    responseManager.json(200, `차량가격과 옵션을 찾았습니다.`, jsonData);
   };
 
   getCapitalList = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
 
     const selectedResult = await this.carModel.selectCapitalList();
-    if (!selectedResult.isOk) {
-      return responseManager.json(404, `차량가격과 옵션들을 찾지 못했습니다.`, {
-        car_price: "정보없음",
-        optionList: [{ car_option: "정보없음", car_option_price: 0 }]
-      });
-    }
-
     const capitalList: ICapitalList[] = selectedResult.data;
     const jsonData = { capitalList };
-    return responseManager.json(200, `캐피탈 리스트를 찾았습니다.`, jsonData);
+
+    return selectedResult.isOk
+      ? responseManager.json(200, `캐피탈 리스트를 찾았습니다.`, jsonData)
+      : responseManager.json(404, `차량가격과 옵션들을 찾지 못했습니다.`, {
+          car_price: "정보없음",
+          optionList: [{ car_option: "정보없음", car_option_price: 0 }]
+        });
   };
 }
