@@ -8,4 +8,5 @@ export interface IJwtParam {
 
 export interface IPayload {
   id: string;
+  level: number;
 }

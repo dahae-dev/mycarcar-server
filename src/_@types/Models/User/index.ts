@@ -7,7 +7,7 @@ export interface ISelectFromUser {
   mb_phone: string;
   mb_company: string;
   mb_fax: string;
-  mb_level: string;
+  mb_level: number;
 }
 
 export interface IEditAccountForResponse {
