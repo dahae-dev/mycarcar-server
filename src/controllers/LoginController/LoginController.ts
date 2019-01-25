@@ -1,4 +1,4 @@
-import { IJwtParam, IPayload } from "../../_@types/Controllers";
+import { IJwtParam, IPayload, ILoginController } from "../../_@types/Controllers";
 import { ISignInInfomation, ISelectFromUser } from "../../_@types/Models/User";
 
 import { Request, Response } from "express";
@@ -9,7 +9,7 @@ import ResponseManager from "../util/ResponseManager";
 
 import UserModel from "../../models/UserModel/UserModel";
 
-export default class LoginController {
+export default class LoginController implements ILoginController {
   constructor() {
     this.userModel = new UserModel();
   }

@@ -5,6 +5,7 @@ import ResponseManager from "../util/ResponseManager";
 
 import EstimateModel from "../../models/EstimateModel/EstimateModel";
 import UserModel from "../../models/UserModel/UserModel";
+import { IEstimateController } from "../../_@types/Controllers";
 
 interface IEstimateInfo {
   car_estimate_no: number;
@@ -30,7 +31,7 @@ interface IEstimateInfo {
   at_date: string;
 }
 
-export default class EstimateController {
+export default class EstimateController implements IEstimateController {
   constructor() {
     this.userModel = new UserModel();
     this.estimateModel = new EstimateModel();

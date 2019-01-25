@@ -1,4 +1,5 @@
 import { IInsertForUser, IInsertForCompanyUser } from "../../_@types/Models/User";
+import { IRegisterController } from "../../_@types/Controllers";
 
 import { Request, Response } from "express";
 
@@ -6,18 +7,16 @@ import ResponseManager from "../util/ResponseManager";
 
 import UserModel from "../../models/UserModel/UserModel";
 
-export default class RegisterController {
+export default class RegisterController implements IRegisterController {
   constructor() {
     this.userModel = new UserModel();
   }
 
-  userModel: UserModel;
+  private userModel: UserModel;
 
   postNomalUser = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
-
     const insertForUser: IInsertForUser = req.body;
-
     const selectResult = await this.userModel.selectUser({ id: insertForUser.id });
 
     if (!selectResult.isOk) {
@@ -30,7 +29,6 @@ export default class RegisterController {
 
   postCompanyUser = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);
-
     const insertForCompanyUser: IInsertForCompanyUser = req.body;
     const id = insertForCompanyUser.id;
     const selectResult = await this.userModel.selectUser({ id });

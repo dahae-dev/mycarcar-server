@@ -15,7 +15,8 @@
     "max-line-length": [true, 120],
     "callable-types": false,
     "trailing-comma": false,
-    "member-access": false
+    "member-access": false,
+    "jsdoc-format": false
   },
   "rulesDirectory": []
 }

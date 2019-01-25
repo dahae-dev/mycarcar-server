@@ -1,5 +1,6 @@
 import { ISelectFromUser, IUpdateForCompanyUser, IUpdateForUser } from "../../_@types/Models/User";
 import { IEditAccountForResponse } from "../../_@types/Models/User";
+import { IEditAccountContoller } from "../../_@types/Controllers";
 
 import { Request, Response } from "express";
 
@@ -8,7 +9,7 @@ import ResponseManager from "../util/ResponseManager";
 
 import UserModel from "../../models/UserModel/UserModel";
 
-export default class EditAccountContoller {
+export default class EditAccountContoller implements IEditAccountContoller {
   constructor() {
     this.userModel = new UserModel();
   }

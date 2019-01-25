@@ -8,6 +8,7 @@ import {
   IPriceList,
   ICapitalList
 } from "../../_@types/Models/Car";
+import { IRentalController } from "../../_@types/Controllers";
 
 import { Response, Request } from "express";
 
@@ -15,7 +16,7 @@ import ResponseManager from "../util/ResponseManager";
 
 import CarModel from "../../models/CarModel/CarModel";
 
-export default class RentalController {
+export default class RentalController implements IRentalController {
   constructor() {
     this.carModel = new CarModel();
   }
