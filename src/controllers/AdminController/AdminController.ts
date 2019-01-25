@@ -1,4 +1,5 @@
 import { IUserList, IUpdatedData } from "../../_@types/Models/User";
+import { IAdminController } from "../../_@types/Controllers";
 
 import { Request, Response } from "express";
 
@@ -6,12 +7,12 @@ import ResponseManager from "../util/ResponseManager";
 
 import UserModel from "../../models/UserModel/UserModel";
 
-export default class AdminController {
+export default class AdminController implements IAdminController {
+  userModel: UserModel;
+
   constructor() {
     this.userModel = new UserModel();
   }
-
-  private userModel: UserModel;
 
   getUserCount = async (req: Request, res: Response) => {
     const responseManager = new ResponseManager(res);

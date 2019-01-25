@@ -1,4 +1,4 @@
-import mysql, { MysqlError } from "mysql";
+import mysql from "mysql";
 import dotenv from "dotenv";
 import path from "path";
 
@@ -24,11 +24,11 @@ interface IMysqlInsertResult {
   isOk: boolean;
 }
 
-interface IMysqlUpdateResult {
+export interface IMysqlUpdateResult {
   isOk: boolean;
 }
 
-interface IMysqlSelectResult {
+export interface IMysqlSelectResult {
   isOk: boolean;
   data: any[];
 }

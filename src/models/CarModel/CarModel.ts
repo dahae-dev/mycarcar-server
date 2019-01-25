@@ -1,8 +1,10 @@
+import { ICarModel } from "../../_@types/Models/Car";
+
 import { selectQuery } from "../../db";
 
 import RentalQuery from "../../querys/RentalQuery/RentalQuery";
 
-export default class CarModel {
+export default class CarModel implements ICarModel {
   rentalQuery: RentalQuery;
 
   constructor() {

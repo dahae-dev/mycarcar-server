@@ -1,3 +1,5 @@
+import { IMysqlSelectResult } from "../../../db";
+
 export interface IGetSelectCarQuery {
   (): string;
 }
@@ -43,4 +45,15 @@ export interface IOptionList {
 export interface ICapitalList {
   capital_name: string;
   capital_profit: number;
+}
+
+export interface ICarModel {
+  selectCarBrandList: (origin: string) => Promise<IMysqlSelectResult>;
+  selectCarSeriesList: (brandId: number) => Promise<IMysqlSelectResult>;
+  selectCarModelList: (seriesId: number) => Promise<IMysqlSelectResult>;
+  selectCarDetailList: (modelId: number) => Promise<IMysqlSelectResult>;
+  selectCarGradeList: (detailId: number) => Promise<IMysqlSelectResult>;
+  selectCarOptionList: (gradeId: number) => Promise<IMysqlSelectResult>;
+  selectCarPrice: (gradeId: number) => Promise<IMysqlSelectResult>;
+  selectCapitalList: () => Promise<IMysqlSelectResult>;
 }
