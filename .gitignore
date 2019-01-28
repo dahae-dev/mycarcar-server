@@ -6,3 +6,4 @@ SQL
 .env
 build
 .vscode
+.env_rds

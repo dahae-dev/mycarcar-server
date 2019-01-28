@@ -41,7 +41,7 @@ app.use("/api/estimate", estimateRouter);
 app.use("/api/admin/user-list", checkToken, checkSuperAdmin, adminUserRouter);
 
 app.use("*", (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, "../../build/index.html"));
+  res.sendFile(path.join(__dirname, "../build/index.html"));
 });
 
 app.use(errorHandler());
